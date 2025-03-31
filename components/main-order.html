@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检验门诊开单</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .patient-info {
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--pb-border);
+        }
+        .order-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .left-panel {
+            width: 250px;
+            border-right: 1px solid var(--pb-border);
+            background-color: #f8fafc;
+            overflow-y: auto;
+        }
+        .right-panel {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            background-color: #ffffff;
+        }
+        .tree-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .tree-item:hover {
+            background-color: #ebf8ff;
+        }
+        .tree-item.active {
+            background-color: #bee3f8;
+            font-weight: bold;
+        }
+        .item-header {
+            background: linear-gradient(to bottom, #f7fafc, #e2e8f0);
+            padding: 8px 10px;
+            font-weight: bold;
+            border-bottom: 1px solid var(--pb-border);
+        }
+        .recognition-button {
+            background-color: #4299e1;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .recognition-button:hover {
+            background-color: #3182ce;
+        }
+        .recognition-button i {
+            font-size: 14px;
+        }
+        .selected-items {
+            border: 1px solid var(--pb-border);
+            border-radius: 3px;
+            background-color: white;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 标题栏 -->
+        <div class="pb-header">
+            <div class="flex justify-between items-center">
+                <div>检验门诊开单</div>
+                <div class="flex items-center gap-2">
+                    <button class="pb-button-secondary text-xs"><i class="fas fa-save mr-1"></i>保存</button>
+                    <button class="pb-button-secondary text-xs"><i class="fas fa-print mr-1"></i>打印</button>
+                    <button class="pb-button-secondary text-xs"><i class="fas fa-times mr-1"></i>关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 患者信息 -->
+        <div class="patient-info p-2">
+            <div class="pb-group">
+                <div class="pb-group-title">患者基本信息</div>
+                <div class="pb-group-content">
+                    <div class="grid grid-cols-5 gap-3">
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">卡号:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="P10086" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">姓名:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="王小明" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">性别:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="男" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">年龄:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="35岁" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">科室:</div>
+                            <div class="pb-form-field">
+                                <select class="pb-select w-full">
+                                    <option>内科</option>
+                                    <option>外科</option>
+                                    <option>妇科</option>
+                                    <option>儿科</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">医生:</div>
+                            <div class="pb-form-field">
+                                <select class="pb-select w-full">
+                                    <option>张医生</option>
+                                    <option>李医生</option>
+                                    <option>王医生</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">诊断:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full">
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">日期:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="2023-03-15" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row">
+                            <div class="pb-form-label">开单医院:</div>
+                            <div class="pb-form-field">
+                                <input type="text" class="pb-input w-full" value="市中心医院" readonly>
+                            </div>
+                        </div>
+                        <div class="pb-form-row col-span-1">
+                            <button id="queryRecognitionBtn" class="recognition-button">
+                                <i class="fas fa-exchange-alt"></i>
+                                查询互认项目
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主要内容区域 -->
+        <div class="order-content">
+            <!-- 左侧检验项目分类 -->
+            <div class="left-panel">
+                <div class="item-header"><i class="fas fa-list-ul mr-1"></i>检验项目分类</div>
+                <div class="tree-view">
+                    <div class="tree-item active"><i class="fas fa-vial mr-1 text-blue-600"></i>血液检验</div>
+                    <div class="tree-item"><i class="fas fa-flask mr-1 text-green-600"></i>生化检验</div>
+                    <div class="tree-item"><i class="fas fa-bacteria mr-1 text-red-600"></i>微生物检验</div>
+                    <div class="tree-item"><i class="fas fa-shield-virus mr-1 text-purple-600"></i>免疫检验</div>
+                    <div class="tree-item"><i class="fas fa-dna mr-1 text-yellow-600"></i>分子生物学检验</div>
+                    <div class="tree-item"><i class="fas fa-briefcase-medical mr-1 text-gray-600"></i>其他检验</div>
+                </div>
+            </div>
+            
+            <!-- 右侧检验项目选择 -->
+            <div class="right-panel">
+                <div class="pb-container">
+                    <div class="item-header flex justify-between items-center">
+                        <span><i class="fas fa-vial mr-1 text-blue-600"></i>血液检验</span>
+                        <div>
+                            <input type="text" class="pb-input" placeholder="搜索项目">
+                            <button class="pb-button-secondary text-xs ml-2"><i class="fas fa-search mr-1"></i>搜索</button>
+                        </div>
+                    </div>
+                    
+                    <div class="py-3">
+                        <table class="pb-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">选择</th>
+                                    <th width="15%">项目编码</th>
+                                    <th width="25%">项目名称</th>
+                                    <th width="15%">价格(元)</th>
+                                    <th width="10%">样本类型</th>
+                                    <th width="15%">互认状态</th>
+                                    <th width="15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                    <td>CBC001</td>
+                                    <td>血常规</td>
+                                    <td>35.00</td>
+                                    <td>全血</td>
+                                    <td><span class="pb-status pb-status-success">可互认</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                    <td>ESR002</td>
+                                    <td>血沉</td>
+                                    <td>15.00</td>
+                                    <td>全血</td>
+                                    <td><span class="pb-status pb-status-warning">待查询</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                    <td>BPC003</td>
+                                    <td>凝血功能</td>
+                                    <td>60.00</td>
+                                    <td>血浆</td>
+                                    <td><span class="pb-status pb-status-danger">不可互认</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                    <td>PTC004</td>
+                                    <td>血小板计数</td>
+                                    <td>20.00</td>
+                                    <td>全血</td>
+                                    <td><span class="pb-status pb-status-success">可互认</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                    <td>HGB005</td>
+                                    <td>血红蛋白</td>
+                                    <td>25.00</td>
+                                    <td>全血</td>
+                                    <td><span class="pb-status pb-status-warning">待查询</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 已选择的检验项目 -->
+                    <div class="selected-items">
+                        <div class="item-header">已选择的检验项目</div>
+                        <table class="pb-table">
+                            <thead>
+                                <tr>
+                                    <th width="15%">项目编码</th>
+                                    <th width="25%">项目名称</th>
+                                    <th width="15%">价格(元)</th>
+                                    <th width="15%">互认状态</th>
+                                    <th width="15%">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>CBC001</td>
+                                    <td>血常规</td>
+                                    <td>35.00</td>
+                                    <td><span class="pb-status pb-status-success">已互认</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                        <button class="pb-icon-button"><i class="fas fa-trash-alt" title="移除"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>LFT002</td>
+                                    <td>肝功能</td>
+                                    <td>80.00</td>
+                                    <td><span class="pb-status pb-status-danger">未互认</span></td>
+                                    <td>
+                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
+                                        <button class="pb-icon-button"><i class="fas fa-trash-alt" title="移除"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- 底部按钮区域 -->
+                    <div class="flex justify-end mt-4 gap-2">
+                        <button class="pb-button-secondary"><i class="fas fa-times mr-1"></i>取消</button>
+                        <button class="pb-button"><i class="fas fa-save mr-1"></i>保存开单</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 查询互认项目按钮点击事件
+            document.getElementById('queryRecognitionBtn').addEventListener('click', function() {
+                // 获取父窗口
+                const parentWindow = window.parent;
+                
+                // 获取互认项目列表的iframe
+                const recognitionListFrame = parentWindow.document.querySelector('iframe[src="components/recognition-list.html"]').contentWindow;
+                
+                // 向互认项目列表发送消息
+                window.appFunctions.sendMessage(recognitionListFrame, 'openRecognitionList', {
+                    patientId: 'P10086',
+                    patientName: '王小明'
+                });
+            });
+            
+            // 为查看互认详情按钮添加点击事件
+            const viewDetailButtons = document.querySelectorAll('.pb-icon-button .fa-eye');
+            viewDetailButtons.forEach(button => {
+                button.parentElement.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const itemCode = row.cells[1].textContent;
+                    const itemName = row.cells[2].textContent;
+                    
+                    // 获取父窗口
+                    const parentWindow = window.parent;
+                    
+                    // 获取检验明细查看的iframe
+                    const detailViewFrame = parentWindow.document.querySelector('iframe[src="components/detail-view.html"]').contentWindow;
+                    
+                    // 向检验明细查看发送消息
+                    window.appFunctions.sendMessage(detailViewFrame, 'viewRecognitionDetail', {
+                        itemCode,
+                        itemName
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

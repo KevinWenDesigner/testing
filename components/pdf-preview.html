@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF预览与打印</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .toolbar {
+            background-color: #f8fafc;
+            border-bottom: 1px solid var(--pb-border);
+            padding: 8px 12px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .preview-area {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            background-color: #e2e8f0;
+        }
+        .pdf-page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .pdf-header {
+            text-align: center;
+            padding-bottom: 10mm;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 10mm;
+        }
+        .pdf-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5mm;
+        }
+        .pdf-subtitle {
+            font-size: 16px;
+            color: #4a5568;
+        }
+        .pdf-info {
+            margin-bottom: 10mm;
+        }
+        .pdf-info-row {
+            display: flex;
+            margin-bottom: 2mm;
+        }
+        .pdf-info-label {
+            width: 25mm;
+            font-weight: bold;
+        }
+        .pdf-info-value {
+            flex: 1;
+        }
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10mm;
+        }
+        .pdf-table th,
+        .pdf-table td {
+            border: 1px solid #cbd5e0;
+            padding: 2mm 3mm;
+            text-align: left;
+        }
+        .pdf-table th {
+            background-color: #f7fafc;
+            font-weight: bold;
+        }
+        .pdf-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            padding-top: 5mm;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 12px;
+            color: #718096;
+        }
+        .pdf-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 100px;
+            color: rgba(0,0,0,0.03);
+            pointer-events: none;
+            user-select: none;
+        }
+        .abnormal {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .zoom-level {
+            width: 60px;
+            text-align: center;
+        }
+        .page-counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .page-number {
+            width: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 标题栏 -->
+        <div class="pb-header">
+            <div class="flex justify-between items-center">
+                <div><i class="fas fa-file-pdf mr-2"></i>检验结果报告预览</div>
+                <div class="flex items-center gap-2">
+                    <button class="pb-button-secondary text-xs" id="closeBtn"><i class="fas fa-times mr-1"></i>关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <button class="pb-button" id="printBtn">
+                <i class="fas fa-print mr-1"></i>打印
+            </button>
+            <button class="pb-button" id="downloadBtn">
+                <i class="fas fa-download mr-1"></i>下载PDF
+            </button>
+            <div class="zoom-controls ml-4">
+                <button class="pb-icon-button" id="zoomOutBtn">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <div class="zoom-level" id="zoomLevel">100%</div>
+                <button class="pb-icon-button" id="zoomInBtn">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
+            <div class="page-counter ml-4">
+                <button class="pb-icon-button" id="prevPageBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="page-number">1/1</div>
+                <button class="pb-icon-button" id="nextPageBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- 预览区域 -->
+        <div class="preview-area" id="previewArea">
+            <div class="pdf-page" id="pdfContent">
+                <!-- PDF内容 -->
+                <div class="pdf-watermark">互认报告</div>
+                
+                <div class="pdf-header">
+                    <div class="pdf-title">检验结果互认报告</div>
+                    <div class="pdf-subtitle">医疗检验结果互认平台</div>
+                </div>
+                
+                <div class="pdf-info">
+                    <div class="pdf-info-row">
+                        <div class="pdf-info-label">患者姓名：</div>
+                        <div class="pdf-info-value" id="patientName">王小明</div>
+                        <div class="pdf-info-label">性别：</div>
+                        <div class="pdf-info-value" id="gender">男</div>
+                    </div>
+                    <div class="pdf-info-row">
+                        <div class="pdf-info-label">年龄：</div>
+                        <div class="pdf-info-value" id="age">35岁</div>
+                        <div class="pdf-info-label">卡号：</div>
+                        <div class="pdf-info-value" id="patientId">P10086</div>
+                    </div>
+                    <div class="pdf-info-row">
+                        <div class="pdf-info-label">检验项目：</div>
+                        <div class="pdf-info-value" id="itemName">血常规</div>
+                        <div class="pdf-info-label">检验医院：</div>
+                        <div class="pdf-info-value" id="hospital">市第一医院</div>
+                    </div>
+                    <div class="pdf-info-row">
+                        <div class="pdf-info-label">检验日期：</div>
+                        <div class="pdf-info-value" id="checkDate">2023-01-15</div>
+                        <div class="pdf-info-label">打印日期：</div>
+                        <div class="pdf-info-value" id="printDate">2023-03-15</div>
+                    </div>
+                </div>
+                
+                <div class="pdf-content">
+                    <table class="pdf-table" id="resultTable">
+                        <thead>
+                            <tr>
+                                <th width="25%">检验项目</th>
+                                <th width="15%">结果</th>
+                                <th width="15%">单位</th>
+                                <th width="25%">参考范围</th>
+                                <th width="20%">状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody">
+                            <!-- 动态加载内容 -->
+                            <tr>
+                                <td>白细胞</td>
+                                <td>6.5</td>
+                                <td>10^9/L</td>
+                                <td>4.0-10.0</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <td>红细胞</td>
+                                <td>4.8</td>
+                                <td>10^12/L</td>
+                                <td>4.0-5.5</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <td>血红蛋白</td>
+                                <td>145</td>
+                                <td>g/L</td>
+                                <td>120-160</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <td>血小板</td>
+                                <td>230</td>
+                                <td>10^9/L</td>
+                                <td>100-300</td>
+                                <td>正常</td>
+                            </tr>
+                            <tr>
+                                <td>中性粒细胞百分比</td>
+                                <td>65.2</td>
+                                <td>%</td>
+                                <td>50.0-70.0</td>
+                                <td>正常</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div>
+                        <div class="font-bold mb-2">医生所见所想：</div>
+                        <p id="doctorComment">患者血常规检查结果基本正常，无明显异常。建议定期复查。</p>
+                    </div>
+                </div>
+                
+                <div class="pdf-footer">
+                    <div>本报告通过医疗检验结果互认平台生成，仅供参考</div>
+                    <div id="reportCode">报告编号：LIS-20230315-001</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置当前日期
+            const now = new Date();
+            document.getElementById('printDate').textContent = now.toLocaleDateString();
+            
+            // 设置报告编号
+            const reportCode = `LIS-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+            document.getElementById('reportCode').textContent = `报告编号：${reportCode}`;
+            
+            // 当前缩放级别
+            let currentZoom = 100;
+            
+            // 接收来自其他界面的消息
+            window.addEventListener('message', function(event) {
+                // 确保消息来源可信
+                if (event.origin !== window.location.origin) return;
+                
+                const { action, data } = event.data;
+                
+                if (action === 'printPDF') {
+                    // 更新PDF内容
+                    updatePDFContent(data);
+                }
+            });
+            
+            // 打印按钮点击事件
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // 下载按钮点击事件
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                // 在实际应用中，这里会调用API生成PDF文件并下载
+                // 这里模拟下载过程
+                alert('PDF生成中，请稍候...');
+                
+                // 模拟下载延迟
+                setTimeout(function() {
+                    alert('PDF已生成，开始下载');
+                }, 1000);
+            });
+            
+            // 放大按钮点击事件
+            document.getElementById('zoomInBtn').addEventListener('click', function() {
+                if (currentZoom < 200) {
+                    currentZoom += 10;
+                    updateZoom();
+                }
+            });
+            
+            // 缩小按钮点击事件
+            document.getElementById('zoomOutBtn').addEventListener('click', function() {
+                if (currentZoom > 50) {
+                    currentZoom -= 10;
+                    updateZoom();
+                }
+            });
+            
+            // 更新缩放级别
+            function updateZoom() {
+                document.getElementById('zoomLevel').textContent = `${currentZoom}%`;
+                document.getElementById('pdfContent').style.transform = `scale(${currentZoom / 100})`;
+                document.getElementById('pdfContent').style.transformOrigin = 'top center';
+            }
+            
+            // 关闭按钮点击事件
+            document.getElementById('closeBtn').addEventListener('click', function() {
+                // 在实际应用中，这里会关闭当前窗口
+                console.log('关闭PDF预览');
+            });
+            
+            // 更新PDF内容
+            function updatePDFContent(data) {
+                console.log('更新PDF内容', data);
+                
+                // 更新基本信息
+                if (data.patientName) document.getElementById('patientName').textContent = data.patientName;
+                if (data.itemName) document.getElementById('itemName').textContent = data.itemName;
+                if (data.hospital) document.getElementById('hospital').textContent = data.hospital;
+                if (data.date) document.getElementById('checkDate').textContent = data.date;
+                
+                // 更新医生评论
+                if (data.itemName === '血常规') {
+                    document.getElementById('doctorComment').textContent = '患者血常规检查结果基本正常，无明显异常。建议定期复查。';
+                } else if (data.itemName === '肝功能') {
+                    document.getElementById('doctorComment').textContent = '患者ALT轻度升高，提示可能存在轻微肝功能异常，建议注意休息，清淡饮食，避免过度劳累，两周后复查肝功能。';
+                } else if (data.itemName === '甲状腺功能') {
+                    document.getElementById('doctorComment').textContent = '患者TSH轻度升高，可能为亚临床甲状腺功能减退，建议3个月后复查甲状腺功能，密切随访。';
+                }
+                
+                // 更新结果表格（根据项目类型）
+                const resultBody = document.getElementById('resultBody');
+                resultBody.innerHTML = '';
+                
+                let resultData = [];
+                
+                if (data.itemName === '血常规') {
+                    // 血常规
+                    resultData = [
+                        { name: '白细胞', value: '6.5', unit: '10^9/L', refRange: '4.0-10.0', status: 'normal' },
+                        { name: '红细胞', value: '4.8', unit: '10^12/L', refRange: '4.0-5.5', status: 'normal' },
+                        { name: '血红蛋白', value: '145', unit: 'g/L', refRange: '120-160', status: 'normal' },
+                        { name: '血小板', value: '230', unit: '10^9/L', refRange: '100-300', status: 'normal' },
+                        { name: '中性粒细胞百分比', value: '65.2', unit: '%', refRange: '50.0-70.0', status: 'normal' }
+                    ];
+                } else if (data.itemName === '肝功能') {
+                    // 肝功能
+                    resultData = [
+                        { name: 'ALT', value: '45', unit: 'U/L', refRange: '5-40', status: 'abnormal' },
+                        { name: 'AST', value: '38', unit: 'U/L', refRange: '5-40', status: 'normal' },
+                        { name: '总胆红素', value: '15', unit: 'μmol/L', refRange: '3-20', status: 'normal' },
+                        { name: '直接胆红素', value: '5', unit: 'μmol/L', refRange: '0-7', status: 'normal' },
+                        { name: '间接胆红素', value: '10', unit: 'μmol/L', refRange: '3-13', status: 'normal' }
+                    ];
+                } else if (data.itemName === '甲状腺功能') {
+                    // 甲状腺功能
+                    resultData = [
+                        { name: 'TSH', value: '5.6', unit: 'mIU/L', refRange: '0.4-4.0', status: 'abnormal' },
+                        { name: 'FT4', value: '12', unit: 'pmol/L', refRange: '9-25', status: 'normal' },
+                        { name: 'FT3', value: '4.2', unit: 'pmol/L', refRange: '3.5-6.5', status: 'normal' },
+                        { name: 'TT4', value: '105', unit: 'nmol/L', refRange: '60-150', status: 'normal' },
+                        { name: 'TT3', value: '1.8', unit: 'nmol/L', refRange: '1.2-2.8', status: 'normal' }
+                    ];
+                } else {
+                    // 默认数据
+                    resultData = [
+                        { name: '检验项目1', value: '正常值', unit: '-', refRange: '-', status: 'normal' },
+                        { name: '检验项目2', value: '正常值', unit: '-', refRange: '-', status: 'normal' }
+                    ];
+                }
+                
+                // 填充结果表格
+                resultData.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    // 检验项目
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = item.name;
+                    row.appendChild(nameCell);
+                    
+                    // 结果
+                    const valueCell = document.createElement('td');
+                    valueCell.textContent = item.value;
+                    if (item.status === 'abnormal') {
+                        valueCell.className = 'abnormal';
+                    }
+                    row.appendChild(valueCell);
+                    
+                    // 单位
+                    const unitCell = document.createElement('td');
+                    unitCell.textContent = item.unit;
+                    row.appendChild(unitCell);
+                    
+                    // 参考范围
+                    const refRangeCell = document.createElement('td');
+                    refRangeCell.textContent = item.refRange;
+                    row.appendChild(refRangeCell);
+                    
+                    // 状态
+                    const statusCell = document.createElement('td');
+                    if (item.status === 'abnormal') {
+                        statusCell.textContent = '异常';
+                        statusCell.className = 'abnormal';
+                    } else {
+                        statusCell.textContent = '正常';
+                    }
+                    row.appendChild(statusCell);
+                    
+                    resultBody.appendChild(row);
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,349 @@
+/* PowerBuilder风格的UI组件样式 */
+:root {
+    --pb-blue: #2c5282;
+    --pb-light-blue: #4299e1;
+    --pb-gray: #718096;
+    --pb-light-gray: #e2e8f0;
+    --pb-border: #cbd5e0;
+    --pb-highlight: #ebf8ff;
+    --pb-text: #2d3748;
+    --pb-success: #48bb78;
+    --pb-warning: #ed8936;
+    --pb-danger: #e53e3e;
+}
+
+/* 通用样式 */
+body {
+    font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+    color: var(--pb-text);
+    background-color: #f0f0f0;
+    font-size: 14px;
+}
+
+/* 标题栏样式 */
+.pb-header {
+    background: linear-gradient(to bottom, #4a6da7, #2c5282);
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-bottom: 1px solid #1a365d;
+}
+
+/* 按钮样式 */
+.pb-button {
+    background-color: var(--pb-blue);
+    border: 1px solid #1a365d;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 2px;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.pb-button:hover {
+    background-color: #3673b3;
+}
+
+.pb-button:active {
+    background-color: #1e4b75;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.pb-button-secondary {
+    background-color: #e2e8f0;
+    border: 1px solid #cbd5e0;
+    color: #2d3748;
+}
+
+.pb-button-secondary:hover {
+    background-color: #edf2f7;
+}
+
+/* 输入框样式 */
+.pb-input {
+    border: 1px solid var(--pb-border);
+    padding: 4px 8px;
+    background-color: white;
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+.pb-input:focus {
+    border-color: var(--pb-light-blue);
+    outline: none;
+    background-color: var(--pb-highlight);
+}
+
+/* 表格样式 */
+.pb-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.pb-table th {
+    background: linear-gradient(to bottom, #f7fafc, #e2e8f0);
+    border: 1px solid var(--pb-border);
+    padding: 6px 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+.pb-table td {
+    border: 1px solid var(--pb-border);
+    padding: 5px 10px;
+    background-color: white;
+}
+
+.pb-table tr:nth-child(even) td {
+    background-color: #f8fafc;
+}
+
+.pb-table tr:hover td {
+    background-color: var(--pb-highlight);
+}
+
+/* 选中行样式 */
+.pb-table tr.selected td {
+    background-color: #bee3f8;
+}
+
+/* 分组框样式 */
+.pb-group {
+    border: 1px solid var(--pb-border);
+    border-radius: 3px;
+    background-color: #f8fafc;
+    margin-bottom: 10px;
+}
+
+.pb-group-title {
+    background: linear-gradient(to bottom, #edf2f7, #e2e8f0);
+    padding: 4px 10px;
+    font-weight: bold;
+    border-bottom: 1px solid var(--pb-border);
+}
+
+.pb-group-content {
+    padding: 10px;
+}
+
+/* 标签样式 */
+.pb-label {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 13px;
+}
+
+/* 选择框样式 */
+.pb-select {
+    border: 1px solid var(--pb-border);
+    background-color: white;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+/* 复选框样式 */
+.pb-checkbox {
+    margin-right: 5px;
+}
+
+/* 状态标识 */
+.pb-status {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.pb-status-success {
+    background-color: #c6f6d5;
+    color: #22543d;
+}
+
+.pb-status-warning {
+    background-color: #feebc8;
+    color: #744210;
+}
+
+.pb-status-danger {
+    background-color: #fed7d7;
+    color: #742a2a;
+}
+
+/* 弹窗样式 */
+.pb-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.pb-modal {
+    background-color: white;
+    border: 1px solid var(--pb-border);
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 600px;
+}
+
+.pb-modal-header {
+    background: linear-gradient(to bottom, #4a6da7, #2c5282);
+    color: white;
+    padding: 8px 12px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pb-modal-body {
+    padding: 15px;
+}
+
+.pb-modal-footer {
+    padding: 10px 15px;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--pb-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 工具栏样式 */
+.pb-toolbar {
+    background: linear-gradient(to bottom, #f7fafc, #e2e8f0);
+    border: 1px solid var(--pb-border);
+    padding: 5px 10px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* 图标按钮 */
+.pb-icon-button {
+    background-color: transparent;
+    border: none;
+    color: var(--pb-blue);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.pb-icon-button:hover {
+    color: var(--pb-light-blue);
+}
+
+/* 容器布局 */
+.pb-container {
+    padding: 10px;
+}
+
+/* 响应式栅格系统 */
+.pb-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -5px;
+}
+
+.pb-col {
+    padding: 5px;
+}
+
+/* 表单布局 */
+.pb-form-row {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.pb-form-label {
+    width: 100px;
+    text-align: right;
+    padding-right: 10px;
+}
+
+.pb-form-field {
+    flex: 1;
+}
+
+/* 分隔线 */
+.pb-divider {
+    height: 1px;
+    background-color: var(--pb-border);
+    margin: 10px 0;
+}
+
+/* 页脚样式 */
+.pb-footer {
+    background-color: #f8fafc;
+    border-top: 1px solid var(--pb-border);
+    padding: 8px 12px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--pb-gray);
+}
+
+/* 加载指示器 */
+.pb-loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(74, 109, 167, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--pb-blue);
+    animation: pb-spin 1s linear infinite;
+}
+
+@keyframes pb-spin {
+    to {transform: rotate(360deg);}
+}
+
+/* 提示文本 */
+.pb-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.pb-tooltip .pb-tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.pb-tooltip:hover .pb-tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 打印按钮特殊样式 */
+.pb-print-button {
+    background-color: var(--pb-blue);
+    color: white;
+    border: 1px solid #1a365d;
+    padding: 4px 12px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.pb-print-button i {
+    font-size: 14px;
+} 

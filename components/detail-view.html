@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检验明细查看</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+        .info-panel {
+            background-color: #f8fafc;
+            border: 1px solid var(--pb-border);
+            border-radius: 3px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            width: 80px;
+            font-weight: bold;
+            color: var(--pb-text);
+        }
+        .info-value {
+            flex: 1;
+        }
+        .result-abnormal {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .result-normal {
+            color: #38a169;
+        }
+        .result-alert {
+            color: #dd6b20;
+        }
+        .chart-container {
+            height: 200px;
+            border: 1px solid var(--pb-border);
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pb-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 标题栏 -->
+        <div class="pb-header">
+            <div class="flex justify-between items-center">
+                <div><i class="fas fa-microscope mr-2"></i>检验结果明细查看</div>
+                <div class="flex items-center gap-2">
+                    <button class="pb-button-secondary text-xs" id="printBtn"><i class="fas fa-print mr-1"></i>打印</button>
+                    <button class="pb-button-secondary text-xs"><i class="fas fa-times mr-1"></i>关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 基本信息 -->
+            <div class="info-panel">
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="info-row">
+                        <div class="info-label">患者姓名：</div>
+                        <div class="info-value" id="patientName">王小明</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">性别：</div>
+                        <div class="info-value" id="gender">男</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">年龄：</div>
+                        <div class="info-value" id="age">35岁</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">卡号：</div>
+                        <div class="info-value" id="patientId">P10086</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验项目：</div>
+                        <div class="info-value" id="itemName">血常规</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验医院：</div>
+                        <div class="info-value" id="hospital">市第一医院</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验日期：</div>
+                        <div class="info-value" id="checkDate">2023-01-15</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">报告状态：</div>
+                        <div class="info-value">
+                            <span class="pb-status pb-status-success" id="reportStatus">已审核</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 检验结果表格 -->
+            <table class="pb-table" id="resultTable">
+                <thead>
+                    <tr>
+                        <th width="20%">检验项目</th>
+                        <th width="15%">结果</th>
+                        <th width="15%">单位</th>
+                        <th width="20%">参考范围</th>
+                        <th width="15%">状态</th>
+                        <th width="15%">历史结果</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                    <!-- 动态加载内容 -->
+                </tbody>
+            </table>
+            
+            <!-- 图表区域 -->
+            <div class="chart-container">
+                <div>
+                    <i class="fas fa-chart-line text-3xl mb-2"></i>
+                    <p>检验结果趋势图</p>
+                </div>
+            </div>
+            
+            <!-- 医生所见所想 -->
+            <div class="pb-group mt-4">
+                <div class="pb-group-title">医生所见所想</div>
+                <div class="pb-group-content">
+                    <p id="doctorComment">患者血常规检查结果基本正常，无明显异常。建议定期复查。</p>
+                </div>
+            </div>
+            
+            <!-- 底部按钮区域 -->
+            <div class="flex justify-end mt-4 gap-2">
+                <button class="pb-button-secondary"><i class="fas fa-history mr-1"></i>查看历史</button>
+                <button class="pb-button" id="printPdfBtn"><i class="fas fa-file-pdf mr-1"></i>导出PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 接收来自其他界面的消息
+            window.addEventListener('message', function(event) {
+                // 确保消息来源可信
+                if (event.origin !== window.location.origin) return;
+                
+                const { action, data } = event.data;
+                
+                if (action === 'viewRecognitionDetail') {
+                    // 更新界面显示
+                    updateDetailView(data);
+                }
+            });
+            
+            // 打印PDF按钮点击事件
+            document.getElementById('printPdfBtn').addEventListener('click', function() {
+                // 获取父窗口
+                const parentWindow = window.parent;
+                
+                // 获取PDF预览与打印的iframe
+                const pdfPreviewFrame = parentWindow.document.querySelector('iframe[src="components/pdf-preview.html"]').contentWindow;
+                
+                // 向PDF预览与打印发送消息
+                window.appFunctions.sendMessage(pdfPreviewFrame, 'printPDF', {
+                    itemName: document.getElementById('itemName').textContent,
+                    patientName: document.getElementById('patientName').textContent,
+                    hospital: document.getElementById('hospital').textContent,
+                    date: document.getElementById('checkDate').textContent
+                });
+            });
+            
+            // 打印按钮点击事件
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // 更新明细查看界面
+            function updateDetailView(data) {
+                console.log('更新明细查看界面', data);
+                
+                // 更新基本信息
+                if (data.itemName) document.getElementById('itemName').textContent = data.itemName;
+                if (data.hospital) document.getElementById('hospital').textContent = data.hospital;
+                if (data.date) document.getElementById('checkDate').textContent = data.date;
+                
+                // 清空结果表格
+                const resultBody = document.getElementById('resultBody');
+                resultBody.innerHTML = '';
+                
+                // 根据项目类型加载相应的检验结果数据
+                let resultData = [];
+                
+                if (data.itemCode === 'CBC001') {
+                    // 血常规
+                    resultData = [
+                        { name: '白细胞', value: '6.5', unit: '10^9/L', refRange: '4.0-10.0', status: 'normal' },
+                        { name: '红细胞', value: '4.8', unit: '10^12/L', refRange: '4.0-5.5', status: 'normal' },
+                        { name: '血红蛋白', value: '145', unit: 'g/L', refRange: '120-160', status: 'normal' },
+                        { name: '血小板', value: '230', unit: '10^9/L', refRange: '100-300', status: 'normal' },
+                        { name: '中性粒细胞百分比', value: '65.2', unit: '%', refRange: '50.0-70.0', status: 'normal' },
+                        { name: '淋巴细胞百分比', value: '28.3', unit: '%', refRange: '20.0-40.0', status: 'normal' },
+                        { name: '单核细胞百分比', value: '5.2', unit: '%', refRange: '3.0-10.0', status: 'normal' },
+                        { name: '嗜酸性粒细胞百分比', value: '1.2', unit: '%', refRange: '0.0-5.0', status: 'normal' },
+                        { name: '嗜碱性粒细胞百分比', value: '0.1', unit: '%', refRange: '0.0-1.0', status: 'normal' }
+                    ];
+                    document.getElementById('doctorComment').textContent = '患者血常规检查结果基本正常，无明显异常。建议定期复查。';
+                } else if (data.itemCode === 'LFT002') {
+                    // 肝功能
+                    resultData = [
+                        { name: 'ALT', value: '45', unit: 'U/L', refRange: '5-40', status: 'abnormal' },
+                        { name: 'AST', value: '38', unit: 'U/L', refRange: '5-40', status: 'normal' },
+                        { name: '总胆红素', value: '15', unit: 'μmol/L', refRange: '3-20', status: 'normal' },
+                        { name: '直接胆红素', value: '5', unit: 'μmol/L', refRange: '0-7', status: 'normal' },
+                        { name: '间接胆红素', value: '10', unit: 'μmol/L', refRange: '3-13', status: 'normal' },
+                        { name: '总蛋白', value: '72', unit: 'g/L', refRange: '65-85', status: 'normal' },
+                        { name: '白蛋白', value: '45', unit: 'g/L', refRange: '40-55', status: 'normal' },
+                        { name: '球蛋白', value: '27', unit: 'g/L', refRange: '20-30', status: 'normal' },
+                        { name: '白球比', value: '1.67', unit: '', refRange: '1.5-2.5', status: 'normal' }
+                    ];
+                    document.getElementById('doctorComment').textContent = '患者ALT轻度升高，提示可能存在轻微肝功能异常，建议注意休息，清淡饮食，避免过度劳累，两周后复查肝功能。';
+                } else if (data.itemCode === 'TH001') {
+                    // 甲状腺功能
+                    resultData = [
+                        { name: 'TSH', value: '5.6', unit: 'mIU/L', refRange: '0.4-4.0', status: 'abnormal' },
+                        { name: 'FT4', value: '12', unit: 'pmol/L', refRange: '9-25', status: 'normal' },
+                        { name: 'FT3', value: '4.2', unit: 'pmol/L', refRange: '3.5-6.5', status: 'normal' },
+                        { name: 'TT4', value: '105', unit: 'nmol/L', refRange: '60-150', status: 'normal' },
+                        { name: 'TT3', value: '1.8', unit: 'nmol/L', refRange: '1.2-2.8', status: 'normal' },
+                        { name: '抗TPO抗体', value: '28', unit: 'IU/mL', refRange: '0-35', status: 'normal' },
+                        { name: '抗Tg抗体', value: '15', unit: 'IU/mL', refRange: '0-40', status: 'normal' }
+                    ];
+                    document.getElementById('doctorComment').textContent = '患者TSH轻度升高，可能为亚临床甲状腺功能减退，建议3个月后复查甲状腺功能，密切随访。';
+                } else {
+                    // 默认数据
+                    resultData = [
+                        { name: '检验项目1', value: '正常值', unit: '-', refRange: '-', status: 'normal' },
+                        { name: '检验项目2', value: '正常值', unit: '-', refRange: '-', status: 'normal' }
+                    ];
+                    document.getElementById('doctorComment').textContent = '暂无医生评论。';
+                }
+                
+                // 填充结果表格
+                resultData.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    // 检验项目
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = item.name;
+                    row.appendChild(nameCell);
+                    
+                    // 结果
+                    const valueCell = document.createElement('td');
+                    valueCell.textContent = item.value;
+                    if (item.status === 'abnormal') {
+                        valueCell.className = 'result-abnormal';
+                    } else if (item.status === 'alert') {
+                        valueCell.className = 'result-alert';
+                    } else {
+                        valueCell.className = 'result-normal';
+                    }
+                    row.appendChild(valueCell);
+                    
+                    // 单位
+                    const unitCell = document.createElement('td');
+                    unitCell.textContent = item.unit;
+                    row.appendChild(unitCell);
+                    
+                    // 参考范围
+                    const refRangeCell = document.createElement('td');
+                    refRangeCell.textContent = item.refRange;
+                    row.appendChild(refRangeCell);
+                    
+                    // 状态
+                    const statusCell = document.createElement('td');
+                    if (item.status === 'abnormal') {
+                        statusCell.innerHTML = '<span class="pb-status pb-status-danger">异常</span>';
+                    } else if (item.status === 'alert') {
+                        statusCell.innerHTML = '<span class="pb-status pb-status-warning">警告</span>';
+                    } else {
+                        statusCell.innerHTML = '<span class="pb-status pb-status-success">正常</span>';
+                    }
+                    row.appendChild(statusCell);
+                    
+                    // 历史结果
+                    const historyCell = document.createElement('td');
+                    historyCell.innerHTML = '<button class="pb-icon-button"><i class="fas fa-history" title="查看历史"></i></button>';
+                    row.appendChild(historyCell);
+                    
+                    resultBody.appendChild(row);
+                });
+            }
+            
+            // 初始化默认显示血常规数据
+            updateDetailView({ itemCode: 'CBC001', itemName: '血常规', hospital: '市第一医院', date: '2023-01-15' });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检验门诊开单系统 - 互认功能展示</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        .prototype-container {
+            width: 1920px;
+            height: 1024px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 20px;
+            padding: 20px;
+        }
+        .prototype-frame {
+            background: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .prototype-title {
+            background: #2c5282;
+            color: white;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100% - 35px);
+            border: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">检验门诊开单系统 - 互认功能原型</h1>
+        
+        <div class="prototype-container">
+            <div class="prototype-frame">
+                <div class="prototype-title">1. 检验门诊开单主界面</div>
+                <iframe src="components/main-order.html"></iframe>
+            </div>
+            
+            <div class="prototype-frame">
+                <div class="prototype-title">2. 互认项目列表</div>
+                <iframe src="components/recognition-list.html"></iframe>
+            </div>
+            
+            <div class="prototype-frame">
+                <div class="prototype-title">3. 不互认理由填写</div>
+                <iframe src="components/rejection-reason.html"></iframe>
+            </div>
+            
+            <div class="prototype-frame">
+                <div class="prototype-title">4. 检验明细查看</div>
+                <iframe src="components/detail-view.html"></iframe>
+            </div>
+            
+            <div class="prototype-frame">
+                <div class="prototype-title">5. PDF预览与打印</div>
+                <iframe src="components/pdf-preview.html"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script src="js/main.js"></script>
+</body>
+</html> 
