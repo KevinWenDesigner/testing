@@ -3,79 +3,307 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>检验门诊开单系统 - 互认功能展示</title>
+    <title>检验门诊开单系统</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <style>
+        :root {
+            --window-bg: #f0f0f0;
+            --titlebar-bg: #2c5282;
+            --titlebar-text: white;
+            --border-color: #d1d5db;
+            --menu-hover: #4a90e2;
+        }
+
         body {
-            background-color: #f0f0f0;
-            font-family: 'Microsoft YaHei', sans-serif;
-        }
-        .prototype-container {
-            width: 1920px;
-            height: 1024px;
-            margin: 0 auto;
-            overflow: hidden;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
-            gap: 20px;
-            padding: 20px;
-        }
-        .prototype-frame {
-            background: white;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-radius: 5px;
+            margin: 0;
+            padding: 0;
+            background: var(--window-bg);
+            font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
-        .prototype-title {
-            background: #2c5282;
-            color: white;
-            padding: 8px 12px;
+
+        .window-titlebar {
+            background: var(--titlebar-bg);
+            color: var(--titlebar-text);
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            -webkit-app-region: drag;
+        }
+
+        .window-title {
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 500;
         }
-        iframe {
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            -webkit-app-region: no-drag;
+        }
+
+        .window-button {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .window-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-bar {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 4px 8px;
+            display: flex;
+            gap: 16px;
+        }
+
+        .menu-item {
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+
+        .menu-item:hover {
+            background: var(--menu-hover);
+            color: white;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #f3f4f6;
+            border-left-color: var(--titlebar-bg);
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 16px;
+            overflow: auto;
+        }
+
+        .content-frame {
+            background: white;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content-frame iframe {
             width: 100%;
-            height: calc(100% - 35px);
+            height: 100%;
             border: none;
+        }
+
+        .status-bar {
+            background: white;
+            border-top: 1px solid var(--border-color);
+            padding: 4px 16px;
+            font-size: 12px;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #eee;
+            border-top-color: var(--titlebar-bg);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="max-w-7xl mx-auto px-4 py-6">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">检验门诊开单系统 - 互认功能原型</h1>
-        
-        <div class="prototype-container">
-            <div class="prototype-frame">
-                <div class="prototype-title">1. 检验门诊开单主界面</div>
-                <iframe src="components/main-order.html"></iframe>
+<body>
+    <!-- 窗口标题栏 -->
+    <div class="window-titlebar">
+        <div class="window-title">检验门诊开单系统</div>
+        <div class="window-controls">
+            <div class="window-button" id="minimizeBtn">
+                <i class="fas fa-window-minimize"></i>
             </div>
-            
-            <div class="prototype-frame">
-                <div class="prototype-title">2. 互认项目列表</div>
-                <iframe src="components/recognition-list.html"></iframe>
+            <div class="window-button" id="maximizeBtn">
+                <i class="fas fa-window-maximize"></i>
             </div>
-            
-            <div class="prototype-frame">
-                <div class="prototype-title">3. 不互认理由填写</div>
-                <iframe src="components/rejection-reason.html"></iframe>
-            </div>
-            
-            <div class="prototype-frame">
-                <div class="prototype-title">4. 检验明细查看</div>
-                <iframe src="components/detail-view.html"></iframe>
-            </div>
-            
-            <div class="prototype-frame">
-                <div class="prototype-title">5. PDF预览与打印</div>
-                <iframe src="components/pdf-preview.html"></iframe>
+            <div class="window-button" id="closeBtn">
+                <i class="fas fa-times"></i>
             </div>
         </div>
     </div>
-    
+
+    <!-- 菜单栏 -->
+    <div class="menu-bar">
+        <div class="menu-item">
+            <i class="fas fa-file"></i>
+            文件
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-edit"></i>
+            编辑
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-cog"></i>
+            设置
+        </div>
+        <div class="menu-item">
+            <i class="fas fa-question-circle"></i>
+            帮助
+        </div>
+    </div>
+
+    <!-- 主要内容区域 -->
+    <div class="main-content">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="nav-item active" data-page="main-order">
+                <i class="fas fa-home"></i>
+                主界面
+            </div>
+            <div class="nav-item" data-page="recognition-list">
+                <i class="fas fa-list"></i>
+                互认项目列表
+            </div>
+            <div class="nav-item" data-page="rejection-reason">
+                <i class="fas fa-edit"></i>
+                不互认理由填写
+            </div>
+            <div class="nav-item" data-page="detail-view">
+                <i class="fas fa-eye"></i>
+                检验明细查看
+            </div>
+            <div class="nav-item" data-page="pdf-preview">
+                <i class="fas fa-file-pdf"></i>
+                PDF预览
+            </div>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <div class="content-frame">
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                </div>
+                <iframe id="mainFrame" src="components/main-order.html"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 状态栏 -->
+    <div class="status-bar">
+        <div class="status-left">就绪</div>
+        <div class="status-right">当前用户：管理员</div>
+    </div>
+
     <script src="js/main.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 窗口控制按钮事件
+            document.getElementById('minimizeBtn').addEventListener('click', () => {
+                // 最小化窗口
+                console.log('最小化窗口');
+            });
+
+            document.getElementById('maximizeBtn').addEventListener('click', () => {
+                // 最大化/还原窗口
+                console.log('最大化/还原窗口');
+            });
+
+            document.getElementById('closeBtn').addEventListener('click', () => {
+                // 关闭窗口
+                console.log('关闭窗口');
+            });
+
+            // 导航项点击事件
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    // 移除其他项的active类
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.remove('active');
+                    });
+
+                    // 添加当前项的active类
+                    item.classList.add('active');
+
+                    // 显示加载动画
+                    document.getElementById('loading').style.display = 'flex';
+
+                    // 加载对应页面
+                    const page = item.dataset.page;
+                    const iframe = document.getElementById('mainFrame');
+                    iframe.src = `components/${page}.html`;
+
+                    // iframe加载完成后隐藏加载动画
+                    iframe.onload = () => {
+                        document.getElementById('loading').style.display = 'none';
+                    };
+                });
+            });
+
+            // 初始化第一个页面
+            const mainFrame = document.getElementById('mainFrame');
+            mainFrame.onload = () => {
+                document.getElementById('loading').style.display = 'none';
+            };
+        });
+    </script>
 </body>
 </html>

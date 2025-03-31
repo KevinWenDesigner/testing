@@ -5,234 +5,244 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>互认项目列表</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #f0f0f0;
+        .recognition-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .main-container {
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+        
+        .recognition-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            color: white;
+            margin-bottom: 1.5rem;
         }
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: #ffffff;
+        
+        .recognition-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
-        .patient-bar {
-            background-color: #f8fafc;
-            border-bottom: 1px solid var(--pb-border);
-            padding: 8px 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            text-align: center;
         }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
         .filter-bar {
-            background-color: #f8fafc;
-            border-bottom: 1px solid var(--pb-border);
-            padding: 8px 12px;
             display: flex;
-            gap: 10px;
-            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
-        .hospital-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background-color: #ebf8ff;
-            border: 1px solid #bee3f8;
-            border-radius: 3px;
-            font-size: 12px;
-            color: #2b6cb0;
-        }
-        .date-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background-color: #e9f7ef;
-            border: 1px solid #c6f6d5;
-            border-radius: 3px;
-            font-size: 12px;
-            color: #276749;
-        }
-        .department-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            background-color: #feebc8;
-            border: 1px solid #fbd38d;
-            border-radius: 3px;
-            font-size: 12px;
-            color: #975a16;
-        }
-        .status-cell {
+        
+        .date-range {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 0.5rem;
         }
+        
+        .pb-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .pb-status-dot.success { background-color: var(--success); }
+        .pb-status-dot.warning { background-color: var(--warning); }
+        .pb-status-dot.error { background-color: var(--error); }
     </style>
 </head>
-<body>
-    <div class="main-container">
-        <!-- 标题栏 -->
-        <div class="pb-header">
-            <div class="flex justify-between items-center">
-                <div><i class="fas fa-exchange-alt mr-2"></i>检验结果互认项目列表</div>
-                <div class="flex items-center gap-2">
-                    <button class="pb-button-secondary text-xs"><i class="fas fa-sync-alt mr-1"></i>刷新</button>
-                    <button class="pb-button-secondary text-xs"><i class="fas fa-times mr-1"></i>关闭</button>
+<body class="bg-gray-50">
+    <div class="recognition-container">
+        <!-- 统计信息头部 -->
+        <div class="recognition-header">
+            <h2 class="text-xl font-bold mb-2">互认项目统计</h2>
+            <div class="recognition-stats">
+                <div class="stat-card">
+                    <div class="stat-value">156</div>
+                    <div class="stat-label">总项目数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">142</div>
+                    <div class="stat-label">可互认项目</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">12</div>
+                    <div class="stat-label">待确认项目</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">不可互认项目</div>
                 </div>
             </div>
         </div>
-        
-        <!-- 患者信息横幅 -->
-        <div class="patient-bar">
-            <div>
-                <span class="font-bold">患者：</span>
-                <span id="patientName">王小明</span>
-                <span class="ml-4">卡号：</span>
-                <span id="patientId">P10086</span>
+
+        <!-- 筛选工具栏 -->
+        <div class="pb-group mb-4">
+            <div class="pb-group-title">
+                <i class="fas fa-filter mr-2"></i>筛选条件
             </div>
-            <div>
-                <span>共查询到</span>
-                <span id="totalCount" class="font-bold text-blue-600">2</span>
-                <span>条互认记录</span>
-            </div>
-        </div>
-        
-        <!-- 筛选栏 -->
-        <div class="filter-bar">
-            <div>
-                <span class="pb-label">检查日期：</span>
-                <input type="date" class="pb-input" value="2023-01-01">
-                <span class="px-1">至</span>
-                <input type="date" class="pb-input" value="2023-03-15">
-            </div>
-            <div>
-                <span class="pb-label">检查医院：</span>
-                <select class="pb-select">
-                    <option value="">全部</option>
-                    <option value="hospital1">市第一医院</option>
-                    <option value="hospital2">市第二医院</option>
-                </select>
-            </div>
-            <div>
-                <span class="pb-label">项目名称：</span>
-                <input type="text" class="pb-input" placeholder="搜索项目">
-            </div>
-            <button class="pb-button"><i class="fas fa-search mr-1"></i>查询</button>
-        </div>
-        
-        <!-- 内容区域 -->
-        <div class="content-area">
-            <div class="mb-4">
-                <table class="pb-table" id="recognitionTable">
-                    <thead>
-                        <tr>
-                            <th width="5%">序号</th>
-                            <th width="10%">检查日期</th>
-                            <th width="15%">检查医院</th>
-                            <th width="10%">科室</th>
-                            <th width="10%">项目编码</th>
-                            <th width="15%">项目名称</th>
-                            <th width="15%">状态</th>
-                            <th width="20%">操作</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>2023-01-15</td>
-                            <td>
-                                <span class="hospital-badge">市第一医院</span>
-                            </td>
-                            <td>
-                                <span class="department-badge">内科</span>
-                            </td>
-                            <td>CBC001</td>
-                            <td>血常规</td>
-                            <td>
-                                <div class="status-cell">
-                                    <span class="pb-status pb-status-success">正常</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flex gap-1">
-                                    <button class="pb-button text-xs view-detail-btn" data-id="1" data-code="CBC001"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
-                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="1" data-code="CBC001"><i class="fas fa-check-circle mr-1"></i>互认</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2023-01-15</td>
-                            <td>
-                                <span class="hospital-badge">市第一医院</span>
-                            </td>
-                            <td>
-                                <span class="department-badge">内科</span>
-                            </td>
-                            <td>LFT002</td>
-                            <td>肝功能</td>
-                            <td>
-                                <div class="status-cell">
-                                    <span class="pb-status pb-status-danger">异常</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flex gap-1">
-                                    <button class="pb-button text-xs view-detail-btn" data-id="2" data-code="LFT002"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
-                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="2" data-code="LFT002"><i class="fas fa-check-circle mr-1"></i>互认</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>2023-01-20</td>
-                            <td>
-                                <span class="hospital-badge">市第二医院</span>
-                            </td>
-                            <td>
-                                <span class="department-badge">内科</span>
-                            </td>
-                            <td>KFT003</td>
-                            <td>肾功能</td>
-                            <td>
-                                <div class="status-cell">
-                                    <span class="pb-status pb-status-warning">待复查</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flex gap-1">
-                                    <button class="pb-button text-xs view-detail-btn" data-id="3" data-code="KFT003"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
-                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="3" data-code="KFT003"><i class="fas fa-check-circle mr-1"></i>互认</button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <!-- 分页 -->
-            <div class="flex justify-between items-center">
-                <div class="text-sm text-gray-600">
-                    共 3 条记录
+            <div class="pb-group-content">
+                <div class="filter-bar">
+                    <div class="date-range">
+                        <input type="date" class="pb-input" value="2024-03-01">
+                        <span>至</span>
+                        <input type="date" class="pb-input" value="2024-03-31">
+                    </div>
+                    <select class="pb-input">
+                        <option value="">全部状态</option>
+                        <option value="1">可互认</option>
+                        <option value="2">待确认</option>
+                        <option value="3">不可互认</option>
+                    </select>
+                    <input type="text" class="pb-input" placeholder="搜索项目名称/编码">
+                    <button class="pb-button">
+                        <i class="fas fa-search mr-1"></i>查询
+                    </button>
+                    <button class="pb-button pb-button-secondary">
+                        <i class="fas fa-redo mr-1"></i>重置
+                    </button>
                 </div>
-                <div class="flex gap-1">
-                    <button class="pb-button-secondary text-xs" disabled><i class="fas fa-chevron-left"></i></button>
-                    <button class="pb-button text-xs">1</button>
-                    <button class="pb-button-secondary text-xs" disabled><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- 项目列表 -->
+        <div class="pb-group">
+            <div class="pb-group-title">
+                <i class="fas fa-list-check mr-2"></i>互认项目列表
+            </div>
+            <div class="pb-group-content">
+                <div class="pb-toolbar mb-3">
+                    <button class="pb-button">
+                        <i class="fas fa-file-export mr-1"></i>导出
+                    </button>
+                    <button class="pb-button pb-button-secondary ml-2">
+                        <i class="fas fa-sync mr-1"></i>刷新
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="pb-table">
+                        <thead>
+                            <tr>
+                                <th>项目编码</th>
+                                <th>项目名称</th>
+                                <th>规格</th>
+                                <th>单价(元)</th>
+                                <th>互认状态</th>
+                                <th>互认医院</th>
+                                <th>更新时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>XY001</td>
+                                <td>血常规</td>
+                                <td>次</td>
+                                <td>35.00</td>
+                                <td>
+                                    <span class="pb-status-dot success"></span>
+                                    可互认
+                                </td>
+                                <td>市一医院、市二医院</td>
+                                <td>2024-03-15 10:30</td>
+                                <td>
+                                    <button class="pb-icon-button" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="pb-icon-button" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>XY002</td>
+                                <td>肝功能</td>
+                                <td>次</td>
+                                <td>80.00</td>
+                                <td>
+                                    <span class="pb-status-dot warning"></span>
+                                    待确认
+                                </td>
+                                <td>市一医院</td>
+                                <td>2024-03-15 09:15</td>
+                                <td>
+                                    <button class="pb-icon-button" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="pb-icon-button" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>XY003</td>
+                                <td>甲功三项</td>
+                                <td>次</td>
+                                <td>120.00</td>
+                                <td>
+                                    <span class="pb-status-dot error"></span>
+                                    不可互认
+                                </td>
+                                <td>-</td>
+                                <td>2024-03-14 16:45</td>
+                                <td>
+                                    <button class="pb-icon-button" title="查看详情">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="pb-icon-button" title="编辑">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <div class="flex justify-between items-center mt-4">
+                    <div class="text-sm text-gray-600">
+                        共 156 条记录
+                    </div>
+                    <div class="pb-pagination">
+                        <button class="pb-button pb-button-secondary" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pb-button pb-button-primary">1</button>
+                        <button class="pb-button pb-button-secondary">2</button>
+                        <button class="pb-button pb-button-secondary">3</button>
+                        <span class="px-2">...</span>
+                        <button class="pb-button pb-button-secondary">10</button>
+                        <button class="pb-button pb-button-secondary">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <script src="../js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>

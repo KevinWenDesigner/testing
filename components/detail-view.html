@@ -5,239 +5,266 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>检验明细查看</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
-        body {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
+        .detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .detail-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
             overflow: hidden;
-            background-color: #f0f0f0;
         }
-        .main-container {
-            width: 100%;
-            height: 100vh;
+        
+        .detail-card-header {
+            padding: 1rem 1.5rem;
+            background: var(--background);
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        
+        .detail-card-body {
+            padding: 1.5rem;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .info-item {
             display: flex;
-            flex-direction: column;
+            align-items: center;
         }
-        .content-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: #ffffff;
-        }
-        .info-panel {
-            background-color: #f8fafc;
-            border: 1px solid var(--pb-border);
-            border-radius: 3px;
-            padding: 10px 15px;
-            margin-bottom: 15px;
-        }
-        .info-row {
-            display: flex;
-            margin-bottom: 8px;
-        }
+        
         .info-label {
-            width: 80px;
-            font-weight: bold;
-            color: var(--pb-text);
+            color: var(--text-secondary);
+            width: 100px;
+            flex-shrink: 0;
         }
+        
         .info-value {
             flex: 1;
         }
-        .result-abnormal {
-            color: #e53e3e;
-            font-weight: bold;
+        
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
         }
-        .result-normal {
-            color: #38a169;
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
         }
-        .result-alert {
-            color: #dd6b20;
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
         }
-        .chart-container {
-            height: 200px;
-            border: 1px solid var(--pb-border);
-            margin-top: 15px;
-            background-color: white;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--pb-gray);
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -2rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 2px solid white;
+            margin-top: 0.25rem;
+        }
+        
+        .timeline-content {
+            background: var(--background);
+            border-radius: var(--radius-md);
+            padding: 1rem;
+        }
+        
+        .compare-table th {
+            min-width: 150px;
+        }
+        
+        .diff-highlight {
+            background-color: #fef3c7;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
         }
     </style>
 </head>
-<body>
-    <div class="main-container">
-        <!-- 标题栏 -->
-        <div class="pb-header">
-            <div class="flex justify-between items-center">
-                <div><i class="fas fa-microscope mr-2"></i>检验结果明细查看</div>
-                <div class="flex items-center gap-2">
-                    <button class="pb-button-secondary text-xs" id="printBtn"><i class="fas fa-print mr-1"></i>打印</button>
-                    <button class="pb-button-secondary text-xs"><i class="fas fa-times mr-1"></i>关闭</button>
+<body class="bg-gray-50">
+    <div class="detail-container">
+        <!-- 页面标题 -->
+        <div class="detail-header">
+            <div>
+                <h2 class="text-xl font-bold mb-2">检验项目明细</h2>
+                <p class="text-sm opacity-90">查看检验项目的详细信息和互认状态</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="pb-button pb-button-secondary">
+                    <i class="fas fa-print mr-1"></i>打印
+                </button>
+                <button class="pb-button pb-button-secondary">
+                    <i class="fas fa-times mr-1"></i>关闭
+                </button>
+            </div>
+        </div>
+
+        <!-- 基本信息 -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <i class="fas fa-info-circle mr-2"></i>基本信息
+            </div>
+            <div class="detail-card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">项目名称：</span>
+                        <span class="info-value">甲功三项</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">项目编码：</span>
+                        <span class="info-value">XY003</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">规格：</span>
+                        <span class="info-value">次</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">单价：</span>
+                        <span class="info-value">120.00元</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">互认状态：</span>
+                        <span class="info-value">
+                            <span class="pb-status pb-status-error">
+                                <i class="fas fa-times-circle mr-1"></i>不可互认
+                            </span>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">更新时间：</span>
+                        <span class="info-value">2024-03-14 16:45</span>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <!-- 内容区域 -->
-        <div class="content-area">
-            <!-- 基本信息 -->
-            <div class="info-panel">
-                <div class="grid grid-cols-4 gap-3">
-                    <div class="info-row">
-                        <div class="info-label">患者姓名：</div>
-                        <div class="info-value" id="patientName">王小明</div>
+
+        <!-- 检验方法对比 -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <i class="fas fa-vials mr-2"></i>检验方法对比
+            </div>
+            <div class="detail-card-body">
+                <div class="overflow-x-auto">
+                    <table class="pb-table compare-table">
+                        <thead>
+                            <tr>
+                                <th>对比项目</th>
+                                <th>本院</th>
+                                <th>市一医院</th>
+                                <th>差异说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>检验方法</td>
+                                <td>化学发光法</td>
+                                <td>电化学发光法</td>
+                                <td><span class="diff-highlight">方法不同</span></td>
+                            </tr>
+                            <tr>
+                                <td>仪器型号</td>
+                                <td>贝克曼AU5800</td>
+                                <td>罗氏Cobas8000</td>
+                                <td><span class="diff-highlight">仪器不同</span></td>
+                            </tr>
+                            <tr>
+                                <td>试剂品牌</td>
+                                <td>贝克曼</td>
+                                <td>罗氏</td>
+                                <td><span class="diff-highlight">品牌不同</span></td>
+                            </tr>
+                            <tr>
+                                <td>参考值范围</td>
+                                <td>0.35-4.94 mIU/L</td>
+                                <td>0.27-4.20 mIU/L</td>
+                                <td><span class="diff-highlight">范围不同</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- 互认记录 -->
+        <div class="detail-card">
+            <div class="detail-card-header">
+                <i class="fas fa-history mr-2"></i>互认记录
+            </div>
+            <div class="detail-card-body">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold">不予互认</h4>
+                                    <p class="text-sm text-gray-600">操作人：张医生</p>
+                                </div>
+                                <span class="text-sm text-gray-500">2024-03-14 16:45</span>
+                            </div>
+                            <div class="text-sm">
+                                <p class="mb-2">不互认原因：</p>
+                                <ul class="list-disc list-inside text-gray-600">
+                                    <li>检验方法不同</li>
+                                    <li>仪器型号不同</li>
+                                    <li>试剂品牌不同</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                    <div class="info-row">
-                        <div class="info-label">性别：</div>
-                        <div class="info-value" id="gender">男</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">年龄：</div>
-                        <div class="info-value" id="age">35岁</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">卡号：</div>
-                        <div class="info-value" id="patientId">P10086</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">检验项目：</div>
-                        <div class="info-value" id="itemName">血常规</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">检验医院：</div>
-                        <div class="info-value" id="hospital">市第一医院</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">检验日期：</div>
-                        <div class="info-value" id="checkDate">2023-01-15</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">报告状态：</div>
-                        <div class="info-value">
-                            <span class="pb-status pb-status-success" id="reportStatus">已审核</span>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <div class="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 class="font-semibold">发起互认申请</h4>
+                                    <p class="text-sm text-gray-600">操作人：李医生</p>
+                                </div>
+                                <span class="text-sm text-gray-500">2024-03-14 10:30</span>
+                            </div>
+                            <p class="text-sm text-gray-600">向市一医院发起互认申请</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- 检验结果表格 -->
-            <table class="pb-table" id="resultTable">
-                <thead>
-                    <tr>
-                        <th width="20%">检验项目</th>
-                        <th width="15%">结果</th>
-                        <th width="15%">单位</th>
-                        <th width="20%">参考范围</th>
-                        <th width="15%">状态</th>
-                        <th width="15%">历史结果</th>
-                    </tr>
-                </thead>
-                <tbody id="resultBody">
-                    <tr>
-                        <td>白细胞计数</td>
-                        <td class="result-normal">6.5</td>
-                        <td>10^9/L</td>
-                        <td>4.0-10.0</td>
-                        <td><span class="pb-status pb-status-success">正常</span></td>
-                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td>红细胞计数</td>
-                        <td class="result-abnormal">3.5</td>
-                        <td>10^12/L</td>
-                        <td>4.0-5.5</td>
-                        <td><span class="pb-status pb-status-danger">异常</span></td>
-                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
-                    </tr>
-                    <tr>
-                        <td>血红蛋白</td>
-                        <td class="result-alert">115</td>
-                        <td>g/L</td>
-                        <td>120-160</td>
-                        <td><span class="pb-status pb-status-warning">偏低</span></td>
-                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <!-- 图表区域 -->
-            <div class="chart-container">
-                <div>
-                    <i class="fas fa-chart-line text-3xl mb-2"></i>
-                    <p>检验结果趋势图</p>
-                </div>
-            </div>
-            
-            <!-- 医生所见所想 -->
-            <div class="pb-group mt-4">
-                <div class="pb-group-title">医生所见所想</div>
-                <div class="pb-group-content">
-                    <p id="doctorComment">患者血常规检查结果基本正常，无明显异常。建议定期复查。</p>
-                </div>
-            </div>
-            
-            <!-- 底部按钮区域 -->
-            <div class="flex justify-end mt-4 gap-2">
-                <button class="pb-button-secondary"><i class="fas fa-history mr-1"></i>查看历史</button>
-                <button class="pb-button" id="printPdfBtn"><i class="fas fa-file-pdf mr-1"></i>导出PDF</button>
-            </div>
         </div>
     </div>
-    
-    <script src="../js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 接收来自其他界面的消息
-            window.addEventListener('message', function(event) {
-                // 确保消息来源可信
-                if (event.origin !== window.location.origin) return;
-                
-                const { action, data } = event.data;
-                
-                if (action === 'viewRecognitionDetail') {
-                    // 更新界面显示
-                    updateDetailView(data);
-                }
-            });
-            
-            // 打印PDF按钮点击事件
-            document.getElementById('printPdfBtn').addEventListener('click', function() {
-                // 获取父窗口
-                const parentWindow = window.parent;
-                
-                // 获取PDF预览与打印的iframe
-                const pdfPreviewFrame = parentWindow.document.querySelector('iframe[src="components/pdf-preview.html"]').contentWindow;
-                
-                // 向PDF预览与打印发送消息
-                window.appFunctions.sendMessage(pdfPreviewFrame, 'printPDF', {
-                    itemName: document.getElementById('itemName').textContent,
-                    patientName: document.getElementById('patientName').textContent,
-                    hospital: document.getElementById('hospital').textContent,
-                    date: document.getElementById('checkDate').textContent
-                });
-            });
-            
-            // 更新详细信息
-            function updateDetailView(data) {
-                // 更新基本信息
-                document.getElementById('patientName').textContent = data.patientName;
-                document.getElementById('gender').textContent = data.gender;
-                document.getElementById('age').textContent = data.age;
-                document.getElementById('patientId').textContent = data.patientId;
-                document.getElementById('itemName').textContent = data.itemName;
-                document.getElementById('hospital').textContent = data.hospital;
-                document.getElementById('checkDate').textContent = data.checkDate;
-                document.getElementById('reportStatus').textContent = data.reportStatus;
-                
-                // 更新医生所见所想
-                document.getElementById('doctorComment').textContent = data.doctorComment;
-            }
-        });
-    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>

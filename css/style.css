@@ -1,3 +1,179 @@
+/* Global Styles */
+:root {
+    /* Color System */
+    --primary: #2c5282;
+    --primary-light: #4299e1;
+    --primary-dark: #2a4365;
+    --secondary: #4299e1;
+    --success: #38a169;
+    --warning: #ed8936;
+    --error: #e53e3e;
+    --background: #f7fafc;
+    --text-primary: #2d3748;
+    --text-secondary: #718096;
+    --border-color: #e2e8f0;
+
+    /* Spacing System */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+}
+
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background-color: var(--background);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Form Elements */
+.form-control {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast);
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* Cards */
+.card {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-1 { margin-top: var(--spacing-xs); }
+.mt-2 { margin-top: var(--spacing-sm); }
+.mt-3 { margin-top: var(--spacing-md); }
+.mt-4 { margin-top: var(--spacing-lg); }
+.mt-5 { margin-top: var(--spacing-xl); }
+
+.mb-1 { margin-bottom: var(--spacing-xs); }
+.mb-2 { margin-bottom: var(--spacing-sm); }
+.mb-3 { margin-bottom: var(--spacing-md); }
+.mb-4 { margin-bottom: var(--spacing-lg); }
+.mb-5 { margin-bottom: var(--spacing-xl); }
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-normal);
+}
+
+.slide-up {
+    animation: slideUp var(--transition-normal);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    :root {
+        --spacing-lg: 1rem;
+        --spacing-xl: 1.5rem;
+    }
+
+    .hide-mobile {
+        display: none !important;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hide-tablet {
+        display: none !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    .hide-desktop {
+        display: none !important;
+    }
+}
+
 /* PowerBuilder风格的UI组件样式 */
 :root {
     --pb-blue: #2c5282;
@@ -31,48 +207,52 @@ body {
 
 /* 按钮样式 */
 .pb-button {
-    background-color: var(--pb-blue);
-    border: 1px solid #1a365d;
-    color: white;
-    padding: 4px 12px;
-    border-radius: 2px;
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: all var(--transition-fast);
+    background: var(--primary);
+    color: white;
+    border: none;
 }
 
 .pb-button:hover {
-    background-color: #3673b3;
+    opacity: 0.9;
 }
 
 .pb-button:active {
-    background-color: #1e4b75;
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+    transform: scale(0.98);
 }
 
 .pb-button-secondary {
-    background-color: #e2e8f0;
-    border: 1px solid #cbd5e0;
-    color: #2d3748;
+    background: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
 }
 
-.pb-button-secondary:hover {
-    background-color: #edf2f7;
+.pb-button-text {
+    background: none;
+    border: none;
+    color: var(--primary);
+    padding: 0.25rem 0.5rem;
 }
 
 /* 输入框样式 */
 .pb-input {
-    border: 1px solid var(--pb-border);
-    padding: 4px 8px;
-    background-color: white;
-    border-radius: 2px;
-    font-size: 13px;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition-fast);
 }
 
 .pb-input:focus {
-    border-color: var(--pb-light-blue);
     outline: none;
-    background-color: var(--pb-highlight);
+    border-color: var(--primary);
 }
 
 /* 表格样式 */
@@ -81,196 +261,63 @@ body {
     border-collapse: collapse;
 }
 
-.pb-table th {
-    background: linear-gradient(to bottom, #f7fafc, #e2e8f0);
-    border: 1px solid var(--pb-border);
-    padding: 6px 10px;
-    text-align: left;
-    font-weight: bold;
-}
-
+.pb-table th,
 .pb-table td {
-    border: 1px solid var(--pb-border);
-    padding: 5px 10px;
-    background-color: white;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
 }
 
-.pb-table tr:nth-child(even) td {
-    background-color: #f8fafc;
+.pb-table th {
+    background: var(--background);
+    font-weight: 600;
+    text-align: left;
 }
 
-.pb-table tr:hover td {
-    background-color: var(--pb-highlight);
+.pb-table tr:hover {
+    background: var(--background);
 }
 
-/* 选中行样式 */
-.pb-table tr.selected td {
-    background-color: #bee3f8;
-}
-
-/* 分组框样式 */
-.pb-group {
-    border: 1px solid var(--pb-border);
-    border-radius: 3px;
-    background-color: #f8fafc;
-    margin-bottom: 10px;
-}
-
-.pb-group-title {
-    background: linear-gradient(to bottom, #edf2f7, #e2e8f0);
-    padding: 4px 10px;
-    font-weight: bold;
-    border-bottom: 1px solid var(--pb-border);
-}
-
-.pb-group-content {
-    padding: 10px;
-}
-
-/* 标签样式 */
-.pb-label {
-    display: inline-block;
-    margin-right: 8px;
-    font-size: 13px;
-}
-
-/* 选择框样式 */
-.pb-select {
-    border: 1px solid var(--pb-border);
-    background-color: white;
-    padding: 3px 8px;
-    border-radius: 2px;
-    font-size: 13px;
-}
-
-/* 复选框样式 */
-.pb-checkbox {
-    margin-right: 5px;
-}
-
-/* 状态标识 */
+/* 状态标签 */
 .pb-status {
-    display: inline-block;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
 }
 
 .pb-status-success {
-    background-color: #c6f6d5;
-    color: #22543d;
+    background: #f0fff4;
+    color: var(--success);
 }
 
 .pb-status-warning {
-    background-color: #feebc8;
-    color: #744210;
+    background: #fffaf0;
+    color: var(--warning);
 }
 
-.pb-status-danger {
-    background-color: #fed7d7;
-    color: #742a2a;
-}
-
-/* 弹窗样式 */
-.pb-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.pb-modal {
-    background-color: white;
-    border: 1px solid var(--pb-border);
-    border-radius: 3px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    width: 90%;
-    max-width: 600px;
-}
-
-.pb-modal-header {
-    background: linear-gradient(to bottom, #4a6da7, #2c5282);
-    color: white;
-    padding: 8px 12px;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.pb-modal-body {
-    padding: 15px;
-}
-
-.pb-modal-footer {
-    padding: 10px 15px;
-    background-color: #f8fafc;
-    border-top: 1px solid var(--pb-border);
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-/* 工具栏样式 */
-.pb-toolbar {
-    background: linear-gradient(to bottom, #f7fafc, #e2e8f0);
-    border: 1px solid var(--pb-border);
-    padding: 5px 10px;
-    display: flex;
-    gap: 5px;
-    align-items: center;
-}
-
-/* 图标按钮 */
-.pb-icon-button {
-    background-color: transparent;
-    border: none;
-    color: var(--pb-blue);
-    cursor: pointer;
-    padding: 4px;
-}
-
-.pb-icon-button:hover {
-    color: var(--pb-light-blue);
-}
-
-/* 容器布局 */
-.pb-container {
-    padding: 10px;
-}
-
-/* 响应式栅格系统 */
-.pb-grid {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -5px;
-}
-
-.pb-col {
-    padding: 5px;
+.pb-status-error {
+    background: #fff5f5;
+    color: var(--error);
 }
 
 /* 表单布局 */
 .pb-form-row {
-    display: flex;
-    margin-bottom: 8px;
-    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .pb-form-label {
-    width: 100px;
-    text-align: right;
-    padding-right: 10px;
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-secondary);
 }
 
-.pb-form-field {
-    flex: 1;
+.pb-checkbox {
+    width: 1rem;
+    height: 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    transition: all var(--transition-fast);
 }
 
 /* 分隔线 */
@@ -346,4 +393,16 @@ body {
 
 .pb-print-button i {
     font-size: 14px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .pb-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .pb-form-row {
+        margin-bottom: 0.75rem;
+    }
 } 
