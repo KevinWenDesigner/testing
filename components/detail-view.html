@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>检验明细查看</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .main-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #ffffff;
+        }
+        .info-panel {
+            background-color: #f8fafc;
+            border: 1px solid var(--pb-border);
+            border-radius: 3px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+        }
+        .info-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            width: 80px;
+            font-weight: bold;
+            color: var(--pb-text);
+        }
+        .info-value {
+            flex: 1;
+        }
+        .result-abnormal {
+            color: #e53e3e;
+            font-weight: bold;
+        }
+        .result-normal {
+            color: #38a169;
+        }
+        .result-alert {
+            color: #dd6b20;
+        }
+        .chart-container {
+            height: 200px;
+            border: 1px solid var(--pb-border);
+            margin-top: 15px;
+            background-color: white;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pb-gray);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- 标题栏 -->
+        <div class="pb-header">
+            <div class="flex justify-between items-center">
+                <div><i class="fas fa-microscope mr-2"></i>检验结果明细查看</div>
+                <div class="flex items-center gap-2">
+                    <button class="pb-button-secondary text-xs" id="printBtn"><i class="fas fa-print mr-1"></i>打印</button>
+                    <button class="pb-button-secondary text-xs"><i class="fas fa-times mr-1"></i>关闭</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 内容区域 -->
+        <div class="content-area">
+            <!-- 基本信息 -->
+            <div class="info-panel">
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="info-row">
+                        <div class="info-label">患者姓名：</div>
+                        <div class="info-value" id="patientName">王小明</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">性别：</div>
+                        <div class="info-value" id="gender">男</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">年龄：</div>
+                        <div class="info-value" id="age">35岁</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">卡号：</div>
+                        <div class="info-value" id="patientId">P10086</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验项目：</div>
+                        <div class="info-value" id="itemName">血常规</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验医院：</div>
+                        <div class="info-value" id="hospital">市第一医院</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">检验日期：</div>
+                        <div class="info-value" id="checkDate">2023-01-15</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">报告状态：</div>
+                        <div class="info-value">
+                            <span class="pb-status pb-status-success" id="reportStatus">已审核</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 检验结果表格 -->
+            <table class="pb-table" id="resultTable">
+                <thead>
+                    <tr>
+                        <th width="20%">检验项目</th>
+                        <th width="15%">结果</th>
+                        <th width="15%">单位</th>
+                        <th width="20%">参考范围</th>
+                        <th width="15%">状态</th>
+                        <th width="15%">历史结果</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody">
+                    <tr>
+                        <td>白细胞计数</td>
+                        <td class="result-normal">6.5</td>
+                        <td>10^9/L</td>
+                        <td>4.0-10.0</td>
+                        <td><span class="pb-status pb-status-success">正常</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>红细胞计数</td>
+                        <td class="result-abnormal">3.5</td>
+                        <td>10^12/L</td>
+                        <td>4.0-5.5</td>
+                        <td><span class="pb-status pb-status-danger">异常</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>血红蛋白</td>
+                        <td class="result-alert">115</td>
+                        <td>g/L</td>
+                        <td>120-160</td>
+                        <td><span class="pb-status pb-status-warning">偏低</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- 图表区域 -->
+            <div class="chart-container">
+                <div>
+                    <i class="fas fa-chart-line text-3xl mb-2"></i>
+                    <p>检验结果趋势图</p>
+                </div>
+            </div>
+            
+            <!-- 医生所见所想 -->
+            <div class="pb-group mt-4">
+                <div class="pb-group-title">医生所见所想</div>
+                <div class="pb-group-content">
+                    <p id="doctorComment">患者血常规检查结果基本正常，无明显异常。建议定期复查。</p>
+                </div>
+            </div>
+            
+            <!-- 底部按钮区域 -->
+            <div class="flex justify-end mt-4 gap-2">
+                <button class="pb-button-secondary"><i class="fas fa-history mr-1"></i>查看历史</button>
+                <button class="pb-button" id="printPdfBtn"><i class="fas fa-file-pdf mr-1"></i>导出PDF</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 接收来自其他界面的消息
+            window.addEventListener('message', function(event) {
+                // 确保消息来源可信
+                if (event.origin !== window.location.origin) return;
+                
+                const { action, data } = event.data;
+                
+                if (action === 'viewRecognitionDetail') {
+                    // 更新界面显示
+                    updateDetailView(data);
+                }
+            });
+            
+            // 打印PDF按钮点击事件
+            document.getElementById('printPdfBtn').addEventListener('click', function() {
+                // 获取父窗口
+                const parentWindow = window.parent;
+                
+                // 获取PDF预览与打印的iframe
+                const pdfPreviewFrame = parentWindow.document.querySelector('iframe[src="components/pdf-preview.html"]').contentWindow;
+                
+                // 向PDF预览与打印发送消息
+                window.appFunctions.sendMessage(pdfPreviewFrame, 'printPDF', {
+                    itemName: document.getElementById('itemName').textContent,
+                    patientName: document.getElementById('patientName').textContent,
+                    hospital: document.getElementById('hospital').textContent,
+                    date: document.getElementById('checkDate').textContent
+                });
+            });
+            
+            // 更新详细信息
+            function updateDetailView(data) {
+                // 更新基本信息
+                document.getElementById('patientName').textContent = data.patientName;
+                document.getElementById('gender').textContent = data.gender;
+                document.getElementById('age').textContent = data.age;
+                document.getElementById('patientId').textContent = data.patientId;
+                document.getElementById('itemName').textContent = data.itemName;
+                document.getElementById('hospital').textContent = data.hospital;
+                document.getElementById('checkDate').textContent = data.checkDate;
+                document.getElementById('reportStatus').textContent = data.reportStatus;
+                
+                // 更新医生所见所想
+                document.getElementById('doctorComment').textContent = data.doctorComment;
+            }
+        });
+    </script>
+</body>
+</html>
