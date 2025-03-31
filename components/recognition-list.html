@@ -199,42 +199,19 @@
                                 <span class="hospital-badge">市第二医院</span>
                             </td>
                             <td>
-                                <span class="department-badge">妇科</span>
+                                <span class="department-badge">内科</span>
                             </td>
-                            <td>CBC001</td>
-                            <td>血常规</td>
+                            <td>KFT003</td>
+                            <td>肾功能</td>
                             <td>
                                 <div class="status-cell">
-                                    <span class="pb-status pb-status-success">正常</span>
+                                    <span class="pb-status pb-status-warning">待复查</span>
                                 </div>
                             </td>
                             <td>
                                 <div class="flex gap-1">
-                                    <button class="pb-button text-xs view-detail-btn" data-id="3" data-code="CBC001"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
-                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="3" data-code="CBC001"><i class="fas fa-check-circle mr-1"></i>互认</button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>2023-01-20</td>
-                            <td>
-                                <span class="hospital-badge">市第二医院</span>
-                            </td>
-                            <td>
-                                <span class="department-badge">妇科</span>
-                            </td>
-                            <td>TH001</td>
-                            <td>甲状腺功能</td>
-                            <td>
-                                <div class="status-cell">
-                                    <span class="pb-status pb-status-danger">异常</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="flex gap-1">
-                                    <button class="pb-button text-xs view-detail-btn" data-id="4" data-code="TH001"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
-                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="4" data-code="TH001"><i class="fas fa-check-circle mr-1"></i>互认</button>
+                                    <button class="pb-button text-xs view-detail-btn" data-id="3" data-code="KFT003"><i class="fas fa-list-alt mr-1"></i>查看明细</button>
+                                    <button class="pb-button text-xs toggle-recognition-btn" data-id="3" data-code="KFT003"><i class="fas fa-check-circle mr-1"></i>互认</button>
                                 </div>
                             </td>
                         </tr>
@@ -242,285 +219,20 @@
                 </table>
             </div>
             
-            <!-- 底部按钮区域 -->
-            <div class="flex justify-between mt-4">
-                <div>
-                    <button class="pb-button" id="selectAllBtn"><i class="fas fa-check-double mr-1"></i>全部互认</button>
+            <!-- 分页 -->
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-600">
+                    共 3 条记录
                 </div>
-                <div class="flex gap-2">
-                    <button class="pb-button-secondary"><i class="fas fa-times mr-1"></i>取消</button>
-                    <button class="pb-button" id="confirmBtn"><i class="fas fa-save mr-1"></i>确认选择</button>
+                <div class="flex gap-1">
+                    <button class="pb-button-secondary text-xs" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="pb-button text-xs">1</button>
+                    <button class="pb-button-secondary text-xs" disabled><i class="fas fa-chevron-right"></i></button>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 互认状态确认弹窗 -->
-    <div class="pb-modal-backdrop" style="display: none;" id="recognitionModal">
-        <div class="pb-modal">
-            <div class="pb-modal-header">
-                <span>确认互认状态</span>
-                <button id="closeModalBtn" class="pb-icon-button text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="pb-modal-body">
-                <p class="mb-3">您确定要互认以下检验项目吗？</p>
-                <div class="p-3 bg-gray-50 rounded">
-                    <p><span class="font-bold">项目名称：</span><span id="modalItemName">血常规</span></p>
-                    <p><span class="font-bold">检查医院：</span><span id="modalHospital">市第一医院</span></p>
-                    <p><span class="font-bold">检查日期：</span><span id="modalDate">2023-01-15</span></p>
-                </div>
-            </div>
-            <div class="pb-modal-footer">
-                <button class="pb-button-secondary" id="cancelRecognitionBtn">不互认</button>
-                <button class="pb-button" id="confirmRecognitionBtn">确认互认</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 不互认理由弹窗 -->
-    <div class="pb-modal-backdrop" style="display: none;" id="reasonModal">
-        <div class="pb-modal">
-            <div class="pb-modal-header">
-                <span>请填写不互认理由</span>
-                <button id="closeReasonModalBtn" class="pb-icon-button text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="pb-modal-body">
-                <p class="mb-3">请选择不互认该检验项目的理由：</p>
-                <div class="mb-3">
-                    <div class="flex items-center mb-2">
-                        <input type="radio" name="reason" id="reason1" value="检验结果异常，需重新检查" class="mr-2">
-                        <label for="reason1">检验结果异常，需重新检查</label>
-                    </div>
-                    <div class="flex items-center mb-2">
-                        <input type="radio" name="reason" id="reason2" value="检验时间过久，需更新数据" class="mr-2">
-                        <label for="reason2">检验时间过久，需更新数据</label>
-                    </div>
-                    <div class="flex items-center mb-2">
-                        <input type="radio" name="reason" id="reason3" value="患者情况已发生变化" class="mr-2">
-                        <label for="reason3">患者情况已发生变化</label>
-                    </div>
-                    <div class="flex items-center mb-2">
-                        <input type="radio" name="reason" id="reason4" value="检验方法不符合当前诊疗需求" class="mr-2">
-                        <label for="reason4">检验方法不符合当前诊疗需求</label>
-                    </div>
-                    <div class="flex items-center">
-                        <input type="radio" name="reason" id="reason5" value="other" class="mr-2">
-                        <label for="reason5">其他原因</label>
-                    </div>
-                </div>
-                <div id="otherReasonContainer" style="display: none;">
-                    <label for="otherReason" class="block mb-2">请输入其他不互认理由：</label>
-                    <textarea id="otherReason" class="pb-input w-full" rows="3" placeholder="请输入不互认理由..."></textarea>
-                </div>
-            </div>
-            <div class="pb-modal-footer">
-                <button class="pb-button-secondary" id="cancelReasonBtn">取消</button>
-                <button class="pb-button" id="confirmReasonBtn">确认</button>
             </div>
         </div>
     </div>
     
     <script src="../js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const recognitionModal = document.getElementById('recognitionModal');
-            const reasonModal = document.getElementById('reasonModal');
-            const modalItemName = document.getElementById('modalItemName');
-            const modalHospital = document.getElementById('modalHospital');
-            const modalDate = document.getElementById('modalDate');
-            let currentItemId = null;
-            
-            // 接收来自开单界面的消息
-            window.addEventListener('message', function(event) {
-                // 确保消息来源可信
-                if (event.origin !== window.location.origin) return;
-                
-                const { action, data } = event.data;
-                
-                if (action === 'openRecognitionList') {
-                    // 更新患者信息
-                    document.getElementById('patientName').textContent = data.patientName;
-                    document.getElementById('patientId').textContent = data.patientId;
-                    
-                    // 模拟从市平台获取互认项目数据
-                    // 在实际应用中，这里会调用API获取数据
-                    console.log('获取互认项目数据', data);
-                }
-            });
-            
-            // 查看明细按钮点击事件
-            const viewDetailButtons = document.querySelectorAll('.view-detail-btn');
-            viewDetailButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const itemId = this.dataset.id;
-                    const itemCode = this.dataset.code;
-                    const row = this.closest('tr');
-                    const itemName = row.cells[5].textContent;
-                    const hospital = row.cells[2].querySelector('.hospital-badge').textContent;
-                    const date = row.cells[1].textContent;
-                    
-                    // 获取父窗口
-                    const parentWindow = window.parent;
-                    
-                    // 获取检验明细查看的iframe
-                    const detailViewFrame = parentWindow.document.querySelector('iframe[src="components/detail-view.html"]').contentWindow;
-                    
-                    // 向检验明细查看发送消息
-                    window.appFunctions.sendMessage(detailViewFrame, 'viewRecognitionDetail', {
-                        itemId,
-                        itemCode,
-                        itemName,
-                        hospital,
-                        date
-                    });
-                });
-            });
-            
-            // 互认按钮点击事件
-            const toggleRecognitionButtons = document.querySelectorAll('.toggle-recognition-btn');
-            toggleRecognitionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const itemId = this.dataset.id;
-                    const row = this.closest('tr');
-                    const itemName = row.cells[5].textContent;
-                    const hospital = row.cells[2].querySelector('.hospital-badge').textContent;
-                    const date = row.cells[1].textContent;
-                    
-                    // 更新弹窗内容
-                    modalItemName.textContent = itemName;
-                    modalHospital.textContent = hospital;
-                    modalDate.textContent = date;
-                    currentItemId = itemId;
-                    
-                    // 显示弹窗
-                    recognitionModal.style.display = 'flex';
-                });
-            });
-            
-            // 关闭互认确认弹窗
-            document.getElementById('closeModalBtn').addEventListener('click', function() {
-                recognitionModal.style.display = 'none';
-            });
-            
-            // 确认互认按钮点击事件
-            document.getElementById('confirmRecognitionBtn').addEventListener('click', function() {
-                // 在实际应用中，这里会调用API保存互认状态
-                console.log('确认互认', currentItemId);
-                
-                // 模拟成功后关闭弹窗
-                recognitionModal.style.display = 'none';
-                
-                // 更新UI显示
-                const button = document.querySelector(`.toggle-recognition-btn[data-id="${currentItemId}"]`);
-                if (button) {
-                    button.innerHTML = '<i class="fas fa-check-circle mr-1"></i>已互认';
-                    button.classList.add('bg-green-600');
-                    button.disabled = true;
-                }
-            });
-            
-            // 不互认按钮点击事件
-            document.getElementById('cancelRecognitionBtn').addEventListener('click', function() {
-                // 关闭互认确认弹窗
-                recognitionModal.style.display = 'none';
-                
-                // 显示不互认理由弹窗
-                reasonModal.style.display = 'flex';
-            });
-            
-            // 关闭不互认理由弹窗
-            document.getElementById('closeReasonModalBtn').addEventListener('click', function() {
-                reasonModal.style.display = 'none';
-            });
-            
-            // 取消不互认理由
-            document.getElementById('cancelReasonBtn').addEventListener('click', function() {
-                reasonModal.style.display = 'none';
-            });
-            
-            // 确认不互认理由
-            document.getElementById('confirmReasonBtn').addEventListener('click', function() {
-                let reason = '';
-                const reasonRadios = document.querySelectorAll('input[name="reason"]');
-                
-                for (const radio of reasonRadios) {
-                    if (radio.checked) {
-                        reason = radio.value;
-                        break;
-                    }
-                }
-                
-                if (reason === 'other') {
-                    reason = document.getElementById('otherReason').value;
-                }
-                
-                if (!reason) {
-                    alert('请选择或输入不互认理由');
-                    return;
-                }
-                
-                // 在实际应用中，这里会调用API保存不互认状态和理由
-                console.log('不互认理由', currentItemId, reason);
-                
-                // 模拟成功后关闭弹窗
-                reasonModal.style.display = 'none';
-                
-                // 更新UI显示
-                const button = document.querySelector(`.toggle-recognition-btn[data-id="${currentItemId}"]`);
-                if (button) {
-                    button.innerHTML = '<i class="fas fa-times-circle mr-1"></i>不互认';
-                    button.classList.add('bg-red-600');
-                    button.disabled = true;
-                }
-                
-                // 获取父窗口
-                const parentWindow = window.parent;
-                
-                // 获取不互认理由填写的iframe
-                const rejectionReasonFrame = parentWindow.document.querySelector('iframe[src="components/rejection-reason.html"]').contentWindow;
-                
-                // 向不互认理由填写发送消息
-                window.appFunctions.sendMessage(rejectionReasonFrame, 'openReasonInput', {
-                    itemId: currentItemId,
-                    reason
-                });
-            });
-            
-            // 其他原因选项切换
-            document.querySelectorAll('input[name="reason"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const otherReasonContainer = document.getElementById('otherReasonContainer');
-                    if (this.value === 'other') {
-                        otherReasonContainer.style.display = 'block';
-                    } else {
-                        otherReasonContainer.style.display = 'none';
-                    }
-                });
-            });
-            
-            // 全部互认按钮点击事件
-            document.getElementById('selectAllBtn').addEventListener('click', function() {
-                const buttons = document.querySelectorAll('.toggle-recognition-btn:not([disabled])');
-                buttons.forEach(button => {
-                    button.innerHTML = '<i class="fas fa-check-circle mr-1"></i>已互认';
-                    button.classList.add('bg-green-600');
-                    button.disabled = true;
-                });
-            });
-            
-            // 确认选择按钮点击事件
-            document.getElementById('confirmBtn').addEventListener('click', function() {
-                // 在实际应用中，这里会调用API保存所有互认状态
-                console.log('确认所有互认选择');
-                
-                // 显示成功消息
-                window.appFunctions.showMessage('互认选择已保存', 'success');
-            });
-        });
-    </script>
 </body>
-</html> 
+</html>

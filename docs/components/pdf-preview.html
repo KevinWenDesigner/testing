@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF预览</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 48px;
+            opacity: 0.1;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .abnormal {
+            color: red;
+            font-weight: bold;
+        }
+        .print-only {
+            display: none;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block;
+            }
+            .watermark {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 顶部工具栏 -->
+        <div class="bg-white rounded-lg shadow-lg p-4 mb-6 no-print">
+            <div class="flex justify-between items-center">
+                <div class="flex space-x-4">
+                    <button onclick="window.print()" class="flex items-center space-x-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <i class="fas fa-print"></i>
+                        <span>打印</span>
+                    </button>
+                    <button class="flex items-center space-x-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                        <i class="fas fa-download"></i>
+                        <span>下载</span>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="zoomOut()" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <span id="zoom-level" class="text-gray-600">100%</span>
+                    <button onclick="zoomIn()" class="text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF预览区域 -->
+        <div class="bg-white rounded-lg shadow-lg p-8 relative" id="pdf-container">
+            <!-- 水印 -->
+            <div class="watermark">仅供预览</div>
+
+            <!-- 报告内容 -->
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-bold">医学检验报告单</h1>
+                    <p class="text-gray-600 mt-2">报告编号：LAB20230615001</p>
+                </div>
+
+                <!-- 患者信息 -->
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div>
+                        <p><span class="font-semibold">患者姓名：</span>张三</p>
+                        <p><span class="font-semibold">性别：</span>男</p>
+                        <p><span class="font-semibold">年龄：</span>35岁</p>
+                    </div>
+                    <div>
+                        <p><span class="font-semibold">科室：</span>内科</p>
+                        <p><span class="font-semibold">床号：</span>0601</p>
+                        <p><span class="font-semibold">采样时间：</span>2023-06-15 08:30</p>
+                    </div>
+                </div>
+
+                <!-- 检验结果表格 -->
+                <table class="min-w-full border border-gray-200 mb-8">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="border px-4 py-2">检验项目</th>
+                            <th class="border px-4 py-2">结果</th>
+                            <th class="border px-4 py-2">参考范围</th>
+                            <th class="border px-4 py-2">单位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border px-4 py-2">白细胞计数(WBC)</td>
+                            <td class="border px-4 py-2">6.5</td>
+                            <td class="border px-4 py-2">4.0-10.0</td>
+                            <td class="border px-4 py-2">10^9/L</td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2">红细胞计数(RBC)</td>
+                            <td class="border px-4 py-2 abnormal">3.5</td>
+                            <td class="border px-4 py-2">4.0-5.5</td>
+                            <td class="border px-4 py-2">10^12/L</td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2">血红蛋白(HGB)</td>
+                            <td class="border px-4 py-2">135</td>
+                            <td class="border px-4 py-2">120-160</td>
+                            <td class="border px-4 py-2">g/L</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- 报告备注 -->
+                <div class="mb-8">
+                    <h3 class="font-semibold mb-2">检验备注：</h3>
+                    <p class="text-gray-700">1. 红细胞计数略低，建议复查。</p>
+                    <p class="text-gray-700">2. 其他检验指标在正常范围内。</p>
+                </div>
+
+                <!-- 报告底部信息 -->
+                <div class="grid grid-cols-3 gap-4 text-sm text-gray-600">
+                    <div>
+                        <p>检验者：王医师</p>
+                        <p>检验时间：2023-06-15 09:30</p>
+                    </div>
+                    <div>
+                        <p>审核者：李主任</p>
+                        <p>审核时间：2023-06-15 10:00</p>
+                    </div>
+                    <div>
+                        <p>报告时间：2023-06-15 10:30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentZoom = 100;
+        const container = document.getElementById('pdf-container');
+
+        function zoomIn() {
+            if (currentZoom < 200) {
+                currentZoom += 10;
+                updateZoom();
+            }
+        }
+
+        function zoomOut() {
+            if (currentZoom > 50) {
+                currentZoom -= 10;
+                updateZoom();
+            }
+        }
+
+        function updateZoom() {
+            container.style.transform = `scale(${currentZoom / 100})`;
+            container.style.transformOrigin = 'top center';
+            document.getElementById('zoom-level').textContent = `${currentZoom}%`;
+        }
+
+        // 监听消息，用于更新PDF内容
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'updatePDF') {
+                // 更新PDF内容的逻辑
+                console.log('Received PDF update request:', event.data);
+            }
+        });
+    </script>
+</body>
+</html>

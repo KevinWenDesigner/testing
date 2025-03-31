@@ -210,71 +210,58 @@
                     <div class="pdf-info-row">
                         <div class="pdf-info-label">检验日期：</div>
                         <div class="pdf-info-value" id="checkDate">2023-01-15</div>
-                        <div class="pdf-info-label">打印日期：</div>
-                        <div class="pdf-info-value" id="printDate">2023-03-15</div>
+                        <div class="pdf-info-label">报告状态：</div>
+                        <div class="pdf-info-value" id="reportStatus">已审核</div>
                     </div>
                 </div>
                 
-                <div class="pdf-content">
-                    <table class="pdf-table" id="resultTable">
-                        <thead>
-                            <tr>
-                                <th width="25%">检验项目</th>
-                                <th width="15%">结果</th>
-                                <th width="15%">单位</th>
-                                <th width="25%">参考范围</th>
-                                <th width="20%">状态</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultBody">
-                            <!-- 动态加载内容 -->
-                            <tr>
-                                <td>白细胞</td>
-                                <td>6.5</td>
-                                <td>10^9/L</td>
-                                <td>4.0-10.0</td>
-                                <td>正常</td>
-                            </tr>
-                            <tr>
-                                <td>红细胞</td>
-                                <td>4.8</td>
-                                <td>10^12/L</td>
-                                <td>4.0-5.5</td>
-                                <td>正常</td>
-                            </tr>
-                            <tr>
-                                <td>血红蛋白</td>
-                                <td>145</td>
-                                <td>g/L</td>
-                                <td>120-160</td>
-                                <td>正常</td>
-                            </tr>
-                            <tr>
-                                <td>血小板</td>
-                                <td>230</td>
-                                <td>10^9/L</td>
-                                <td>100-300</td>
-                                <td>正常</td>
-                            </tr>
-                            <tr>
-                                <td>中性粒细胞百分比</td>
-                                <td>65.2</td>
-                                <td>%</td>
-                                <td>50.0-70.0</td>
-                                <td>正常</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                    <div>
-                        <div class="font-bold mb-2">医生所见所想：</div>
-                        <p id="doctorComment">患者血常规检查结果基本正常，无明显异常。建议定期复查。</p>
+                <table class="pdf-table">
+                    <thead>
+                        <tr>
+                            <th>检验项目</th>
+                            <th>结果</th>
+                            <th>单位</th>
+                            <th>参考范围</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>白细胞计数</td>
+                            <td>6.5</td>
+                            <td>10^9/L</td>
+                            <td>4.0-10.0</td>
+                            <td>正常</td>
+                        </tr>
+                        <tr>
+                            <td>红细胞计数</td>
+                            <td class="abnormal">3.5</td>
+                            <td>10^12/L</td>
+                            <td>4.0-5.5</td>
+                            <td class="abnormal">异常</td>
+                        </tr>
+                        <tr>
+                            <td>血红蛋白</td>
+                            <td class="abnormal">115</td>
+                            <td>g/L</td>
+                            <td>120-160</td>
+                            <td class="abnormal">偏低</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="pdf-info">
+                    <div class="pdf-info-row">
+                        <div class="pdf-info-label">医生所见：</div>
+                        <div class="pdf-info-value" id="doctorComment">
+                            患者血常规检查结果基本正常，无明显异常。建议定期复查。
+                        </div>
                     </div>
                 </div>
                 
                 <div class="pdf-footer">
-                    <div>本报告通过医疗检验结果互认平台生成，仅供参考</div>
-                    <div id="reportCode">报告编号：LIS-20230315-001</div>
+                    <div>报告生成时间：2023-03-15 15:30:00</div>
+                    <div>本报告仅供医疗机构互认使用</div>
                 </div>
             </div>
         </div>
@@ -283,177 +270,65 @@
     <script src="../js/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // 设置当前日期
-            const now = new Date();
-            document.getElementById('printDate').textContent = now.toLocaleDateString();
-            
-            // 设置报告编号
-            const reportCode = `LIS-${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
-            document.getElementById('reportCode').textContent = `报告编号：${reportCode}`;
-            
-            // 当前缩放级别
             let currentZoom = 100;
+            const zoomStep = 10;
+            const previewArea = document.getElementById('previewArea');
+            const pdfContent = document.getElementById('pdfContent');
+            const zoomLevel = document.getElementById('zoomLevel');
+            
+            // 缩放控制
+            document.getElementById('zoomInBtn').addEventListener('click', function() {
+                currentZoom += zoomStep;
+                updateZoom();
+            });
+            
+            document.getElementById('zoomOutBtn').addEventListener('click', function() {
+                currentZoom = Math.max(currentZoom - zoomStep, 50);
+                updateZoom();
+            });
+            
+            function updateZoom() {
+                zoomLevel.textContent = currentZoom + '%';
+                pdfContent.style.transform = `scale(${currentZoom / 100})`;
+                pdfContent.style.transformOrigin = 'top center';
+            }
+            
+            // 打印功能
+            document.getElementById('printBtn').addEventListener('click', function() {
+                window.print();
+            });
+            
+            // 下载功能
+            document.getElementById('downloadBtn').addEventListener('click', function() {
+                // 这里需要实现PDF生成和下载逻辑
+                alert('PDF下载功能即将上线');
+            });
+            
+            // 关闭按钮
+            document.getElementById('closeBtn').addEventListener('click', function() {
+                window.parent.postMessage({ action: 'closePdfPreview' }, '*');
+            });
             
             // 接收来自其他界面的消息
             window.addEventListener('message', function(event) {
-                // 确保消息来源可信
                 if (event.origin !== window.location.origin) return;
                 
                 const { action, data } = event.data;
                 
                 if (action === 'printPDF') {
                     // 更新PDF内容
-                    updatePDFContent(data);
+                    updatePdfContent(data);
                 }
-            });
-            
-            // 打印按钮点击事件
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
-            
-            // 下载按钮点击事件
-            document.getElementById('downloadBtn').addEventListener('click', function() {
-                // 在实际应用中，这里会调用API生成PDF文件并下载
-                // 这里模拟下载过程
-                alert('PDF生成中，请稍候...');
-                
-                // 模拟下载延迟
-                setTimeout(function() {
-                    alert('PDF已生成，开始下载');
-                }, 1000);
-            });
-            
-            // 放大按钮点击事件
-            document.getElementById('zoomInBtn').addEventListener('click', function() {
-                if (currentZoom < 200) {
-                    currentZoom += 10;
-                    updateZoom();
-                }
-            });
-            
-            // 缩小按钮点击事件
-            document.getElementById('zoomOutBtn').addEventListener('click', function() {
-                if (currentZoom > 50) {
-                    currentZoom -= 10;
-                    updateZoom();
-                }
-            });
-            
-            // 更新缩放级别
-            function updateZoom() {
-                document.getElementById('zoomLevel').textContent = `${currentZoom}%`;
-                document.getElementById('pdfContent').style.transform = `scale(${currentZoom / 100})`;
-                document.getElementById('pdfContent').style.transformOrigin = 'top center';
-            }
-            
-            // 关闭按钮点击事件
-            document.getElementById('closeBtn').addEventListener('click', function() {
-                // 在实际应用中，这里会关闭当前窗口
-                console.log('关闭PDF预览');
             });
             
             // 更新PDF内容
-            function updatePDFContent(data) {
-                console.log('更新PDF内容', data);
-                
-                // 更新基本信息
-                if (data.patientName) document.getElementById('patientName').textContent = data.patientName;
-                if (data.itemName) document.getElementById('itemName').textContent = data.itemName;
-                if (data.hospital) document.getElementById('hospital').textContent = data.hospital;
-                if (data.date) document.getElementById('checkDate').textContent = data.date;
-                
-                // 更新医生评论
-                if (data.itemName === '血常规') {
-                    document.getElementById('doctorComment').textContent = '患者血常规检查结果基本正常，无明显异常。建议定期复查。';
-                } else if (data.itemName === '肝功能') {
-                    document.getElementById('doctorComment').textContent = '患者ALT轻度升高，提示可能存在轻微肝功能异常，建议注意休息，清淡饮食，避免过度劳累，两周后复查肝功能。';
-                } else if (data.itemName === '甲状腺功能') {
-                    document.getElementById('doctorComment').textContent = '患者TSH轻度升高，可能为亚临床甲状腺功能减退，建议3个月后复查甲状腺功能，密切随访。';
-                }
-                
-                // 更新结果表格（根据项目类型）
-                const resultBody = document.getElementById('resultBody');
-                resultBody.innerHTML = '';
-                
-                let resultData = [];
-                
-                if (data.itemName === '血常规') {
-                    // 血常规
-                    resultData = [
-                        { name: '白细胞', value: '6.5', unit: '10^9/L', refRange: '4.0-10.0', status: 'normal' },
-                        { name: '红细胞', value: '4.8', unit: '10^12/L', refRange: '4.0-5.5', status: 'normal' },
-                        { name: '血红蛋白', value: '145', unit: 'g/L', refRange: '120-160', status: 'normal' },
-                        { name: '血小板', value: '230', unit: '10^9/L', refRange: '100-300', status: 'normal' },
-                        { name: '中性粒细胞百分比', value: '65.2', unit: '%', refRange: '50.0-70.0', status: 'normal' }
-                    ];
-                } else if (data.itemName === '肝功能') {
-                    // 肝功能
-                    resultData = [
-                        { name: 'ALT', value: '45', unit: 'U/L', refRange: '5-40', status: 'abnormal' },
-                        { name: 'AST', value: '38', unit: 'U/L', refRange: '5-40', status: 'normal' },
-                        { name: '总胆红素', value: '15', unit: 'μmol/L', refRange: '3-20', status: 'normal' },
-                        { name: '直接胆红素', value: '5', unit: 'μmol/L', refRange: '0-7', status: 'normal' },
-                        { name: '间接胆红素', value: '10', unit: 'μmol/L', refRange: '3-13', status: 'normal' }
-                    ];
-                } else if (data.itemName === '甲状腺功能') {
-                    // 甲状腺功能
-                    resultData = [
-                        { name: 'TSH', value: '5.6', unit: 'mIU/L', refRange: '0.4-4.0', status: 'abnormal' },
-                        { name: 'FT4', value: '12', unit: 'pmol/L', refRange: '9-25', status: 'normal' },
-                        { name: 'FT3', value: '4.2', unit: 'pmol/L', refRange: '3.5-6.5', status: 'normal' },
-                        { name: 'TT4', value: '105', unit: 'nmol/L', refRange: '60-150', status: 'normal' },
-                        { name: 'TT3', value: '1.8', unit: 'nmol/L', refRange: '1.2-2.8', status: 'normal' }
-                    ];
-                } else {
-                    // 默认数据
-                    resultData = [
-                        { name: '检验项目1', value: '正常值', unit: '-', refRange: '-', status: 'normal' },
-                        { name: '检验项目2', value: '正常值', unit: '-', refRange: '-', status: 'normal' }
-                    ];
-                }
-                
-                // 填充结果表格
-                resultData.forEach(item => {
-                    const row = document.createElement('tr');
-                    
-                    // 检验项目
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = item.name;
-                    row.appendChild(nameCell);
-                    
-                    // 结果
-                    const valueCell = document.createElement('td');
-                    valueCell.textContent = item.value;
-                    if (item.status === 'abnormal') {
-                        valueCell.className = 'abnormal';
-                    }
-                    row.appendChild(valueCell);
-                    
-                    // 单位
-                    const unitCell = document.createElement('td');
-                    unitCell.textContent = item.unit;
-                    row.appendChild(unitCell);
-                    
-                    // 参考范围
-                    const refRangeCell = document.createElement('td');
-                    refRangeCell.textContent = item.refRange;
-                    row.appendChild(refRangeCell);
-                    
-                    // 状态
-                    const statusCell = document.createElement('td');
-                    if (item.status === 'abnormal') {
-                        statusCell.textContent = '异常';
-                        statusCell.className = 'abnormal';
-                    } else {
-                        statusCell.textContent = '正常';
-                    }
-                    row.appendChild(statusCell);
-                    
-                    resultBody.appendChild(row);
-                });
+            function updatePdfContent(data) {
+                document.getElementById('patientName').textContent = data.patientName;
+                document.getElementById('itemName').textContent = data.itemName;
+                document.getElementById('hospital').textContent = data.hospital;
+                document.getElementById('checkDate').textContent = data.date;
             }
         });
     </script>
 </body>
-</html> 
+</html>

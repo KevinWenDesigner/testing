@@ -197,95 +197,12 @@
                 const { action, data } = event.data;
                 
                 if (action === 'openReasonInput') {
-                    // 接收到不互认理由
-                    console.log('接收到不互认理由', data);
-                    
-                    // 添加记录
-                    addReasonRecord(data);
+                    // 显示不互认理由输入界面
+                    document.getElementById('emptyState').style.display = 'none';
+                    document.getElementById('reasonList').style.display = 'block';
                 }
             });
-            
-            // 添加不互认理由记录
-            function addReasonRecord(data) {
-                const record = {
-                    id: data.itemId,
-                    reason: data.reason,
-                    itemName: getItemNameById(data.itemId),
-                    hospital: getHospitalById(data.itemId),
-                    date: getDateById(data.itemId),
-                    doctor: '张医生',
-                    timestamp: new Date().toLocaleString()
-                };
-                
-                reasonRecords.push(record);
-                
-                // 更新UI
-                updateUI();
-            }
-            
-            // 根据ID获取项目名称（模拟）
-            function getItemNameById(id) {
-                const items = {
-                    '1': '血常规',
-                    '2': '肝功能',
-                    '3': '血常规',
-                    '4': '甲状腺功能'
-                };
-                return items[id] || '未知项目';
-            }
-            
-            // 根据ID获取医院（模拟）
-            function getHospitalById(id) {
-                const hospitals = {
-                    '1': '市第一医院',
-                    '2': '市第一医院',
-                    '3': '市第二医院',
-                    '4': '市第二医院'
-                };
-                return hospitals[id] || '未知医院';
-            }
-            
-            // 根据ID获取日期（模拟）
-            function getDateById(id) {
-                const dates = {
-                    '1': '2023-01-15',
-                    '2': '2023-01-15',
-                    '3': '2023-01-20',
-                    '4': '2023-01-20'
-                };
-                return dates[id] || '未知日期';
-            }
-            
-            // 更新UI显示
-            function updateUI() {
-                const emptyState = document.getElementById('emptyState');
-                const reasonList = document.getElementById('reasonList');
-                
-                if (reasonRecords.length > 0) {
-                    // 有记录，隐藏空状态
-                    emptyState.style.display = 'none';
-                    reasonList.style.display = 'block';
-                    
-                    // 创建新的理由卡片
-                    const template = document.getElementById('reason-template');
-                    const newRecord = reasonRecords[reasonRecords.length - 1];
-                    
-                    const card = template.cloneNode(true);
-                    card.id = `reason-${newRecord.id}`;
-                    card.style.display = 'block';
-                    
-                    // 设置卡片内容
-                    card.querySelector('[data-field="itemName"]').textContent = newRecord.itemName;
-                    card.querySelector('[data-field="hospital"]').textContent = newRecord.hospital;
-                    card.querySelector('[data-field="date"]').textContent = newRecord.date;
-                    card.querySelector('[data-field="reasonText"]').textContent = newRecord.reason;
-                    card.querySelector('[data-field="doctorInfo"]').textContent = `操作医生：${newRecord.doctor} | 操作时间：${newRecord.timestamp}`;
-                    
-                    // 添加到列表最前面
-                    reasonList.insertBefore(card, reasonList.firstChild);
-                }
-            }
         });
     </script>
 </body>
-</html> 
+</html>

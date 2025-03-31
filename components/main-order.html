@@ -198,129 +198,69 @@
             <!-- 右侧检验项目选择 -->
             <div class="right-panel">
                 <div class="pb-container">
-                    <div class="item-header flex justify-between items-center">
-                        <span><i class="fas fa-vial mr-1 text-blue-600"></i>血液检验</span>
-                        <div>
-                            <input type="text" class="pb-input" placeholder="搜索项目">
-                            <button class="pb-button-secondary text-xs ml-2"><i class="fas fa-search mr-1"></i>搜索</button>
+                    <div class="pb-group">
+                        <div class="pb-group-title">检验项目选择</div>
+                        <div class="pb-group-content">
+                            <div class="grid grid-cols-2 gap-4">
+                                <!-- 可选项目列表 -->
+                                <div>
+                                    <div class="pb-table-container">
+                                        <table class="pb-table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="40px">选择</th>
+                                                    <th>项目名称</th>
+                                                    <th width="80px">价格</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                                    <td>血常规</td>
+                                                    <td>¥35.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                                    <td>血型鉴定</td>
+                                                    <td>¥20.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><input type="checkbox" class="pb-checkbox"></td>
+                                                    <td>凝血功能</td>
+                                                    <td>¥45.00</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- 已选项目列表 -->
+                                <div>
+                                    <div class="pb-table-container">
+                                        <table class="pb-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>项目名称</th>
+                                                    <th width="80px">价格</th>
+                                                    <th width="60px">操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>血常规</td>
+                                                    <td>¥35.00</td>
+                                                    <td>
+                                                        <button class="pb-button-text text-red-600">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="py-3">
-                        <table class="pb-table">
-                            <thead>
-                                <tr>
-                                    <th width="5%">选择</th>
-                                    <th width="15%">项目编码</th>
-                                    <th width="25%">项目名称</th>
-                                    <th width="15%">价格(元)</th>
-                                    <th width="10%">样本类型</th>
-                                    <th width="15%">互认状态</th>
-                                    <th width="15%">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="checkbox" class="pb-checkbox"></td>
-                                    <td>CBC001</td>
-                                    <td>血常规</td>
-                                    <td>35.00</td>
-                                    <td>全血</td>
-                                    <td><span class="pb-status pb-status-success">可互认</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="pb-checkbox"></td>
-                                    <td>ESR002</td>
-                                    <td>血沉</td>
-                                    <td>15.00</td>
-                                    <td>全血</td>
-                                    <td><span class="pb-status pb-status-warning">待查询</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="pb-checkbox"></td>
-                                    <td>BPC003</td>
-                                    <td>凝血功能</td>
-                                    <td>60.00</td>
-                                    <td>血浆</td>
-                                    <td><span class="pb-status pb-status-danger">不可互认</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="pb-checkbox"></td>
-                                    <td>PTC004</td>
-                                    <td>血小板计数</td>
-                                    <td>20.00</td>
-                                    <td>全血</td>
-                                    <td><span class="pb-status pb-status-success">可互认</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" class="pb-checkbox"></td>
-                                    <td>HGB005</td>
-                                    <td>血红蛋白</td>
-                                    <td>25.00</td>
-                                    <td>全血</td>
-                                    <td><span class="pb-status pb-status-warning">待查询</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- 已选择的检验项目 -->
-                    <div class="selected-items">
-                        <div class="item-header">已选择的检验项目</div>
-                        <table class="pb-table">
-                            <thead>
-                                <tr>
-                                    <th width="15%">项目编码</th>
-                                    <th width="25%">项目名称</th>
-                                    <th width="15%">价格(元)</th>
-                                    <th width="15%">互认状态</th>
-                                    <th width="15%">操作</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>CBC001</td>
-                                    <td>血常规</td>
-                                    <td>35.00</td>
-                                    <td><span class="pb-status pb-status-success">已互认</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                        <button class="pb-icon-button"><i class="fas fa-trash-alt" title="移除"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>LFT002</td>
-                                    <td>肝功能</td>
-                                    <td>80.00</td>
-                                    <td><span class="pb-status pb-status-danger">未互认</span></td>
-                                    <td>
-                                        <button class="pb-icon-button"><i class="fas fa-eye" title="查看互认详情"></i></button>
-                                        <button class="pb-icon-button"><i class="fas fa-trash-alt" title="移除"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- 底部按钮区域 -->
-                    <div class="flex justify-end mt-4 gap-2">
-                        <button class="pb-button-secondary"><i class="fas fa-times mr-1"></i>取消</button>
-                        <button class="pb-button"><i class="fas fa-save mr-1"></i>保存开单</button>
                     </div>
                 </div>
             </div>
@@ -328,45 +268,5 @@
     </div>
     
     <script src="../js/main.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // 查询互认项目按钮点击事件
-            document.getElementById('queryRecognitionBtn').addEventListener('click', function() {
-                // 获取父窗口
-                const parentWindow = window.parent;
-                
-                // 获取互认项目列表的iframe
-                const recognitionListFrame = parentWindow.document.querySelector('iframe[src="components/recognition-list.html"]').contentWindow;
-                
-                // 向互认项目列表发送消息
-                window.appFunctions.sendMessage(recognitionListFrame, 'openRecognitionList', {
-                    patientId: 'P10086',
-                    patientName: '王小明'
-                });
-            });
-            
-            // 为查看互认详情按钮添加点击事件
-            const viewDetailButtons = document.querySelectorAll('.pb-icon-button .fa-eye');
-            viewDetailButtons.forEach(button => {
-                button.parentElement.addEventListener('click', function() {
-                    const row = this.closest('tr');
-                    const itemCode = row.cells[1].textContent;
-                    const itemName = row.cells[2].textContent;
-                    
-                    // 获取父窗口
-                    const parentWindow = window.parent;
-                    
-                    // 获取检验明细查看的iframe
-                    const detailViewFrame = parentWindow.document.querySelector('iframe[src="components/detail-view.html"]').contentWindow;
-                    
-                    // 向检验明细查看发送消息
-                    window.appFunctions.sendMessage(detailViewFrame, 'viewRecognitionDetail', {
-                        itemCode,
-                        itemName
-                    });
-                });
-            });
-        });
-    </script>
 </body>
-</html> 
+</html>

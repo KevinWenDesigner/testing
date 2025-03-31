@@ -138,7 +138,30 @@
                     </tr>
                 </thead>
                 <tbody id="resultBody">
-                    <!-- 动态加载内容 -->
+                    <tr>
+                        <td>白细胞计数</td>
+                        <td class="result-normal">6.5</td>
+                        <td>10^9/L</td>
+                        <td>4.0-10.0</td>
+                        <td><span class="pb-status pb-status-success">正常</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>红细胞计数</td>
+                        <td class="result-abnormal">3.5</td>
+                        <td>10^12/L</td>
+                        <td>4.0-5.5</td>
+                        <td><span class="pb-status pb-status-danger">异常</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
+                    <tr>
+                        <td>血红蛋白</td>
+                        <td class="result-alert">115</td>
+                        <td>g/L</td>
+                        <td>120-160</td>
+                        <td><span class="pb-status pb-status-warning">偏低</span></td>
+                        <td><button class="pb-button-text"><i class="fas fa-chart-line"></i></button></td>
+                    </tr>
                 </tbody>
             </table>
             
@@ -199,130 +222,22 @@
                 });
             });
             
-            // 打印按钮点击事件
-            document.getElementById('printBtn').addEventListener('click', function() {
-                window.print();
-            });
-            
-            // 更新明细查看界面
+            // 更新详细信息
             function updateDetailView(data) {
-                console.log('更新明细查看界面', data);
-                
                 // 更新基本信息
-                if (data.itemName) document.getElementById('itemName').textContent = data.itemName;
-                if (data.hospital) document.getElementById('hospital').textContent = data.hospital;
-                if (data.date) document.getElementById('checkDate').textContent = data.date;
+                document.getElementById('patientName').textContent = data.patientName;
+                document.getElementById('gender').textContent = data.gender;
+                document.getElementById('age').textContent = data.age;
+                document.getElementById('patientId').textContent = data.patientId;
+                document.getElementById('itemName').textContent = data.itemName;
+                document.getElementById('hospital').textContent = data.hospital;
+                document.getElementById('checkDate').textContent = data.checkDate;
+                document.getElementById('reportStatus').textContent = data.reportStatus;
                 
-                // 清空结果表格
-                const resultBody = document.getElementById('resultBody');
-                resultBody.innerHTML = '';
-                
-                // 根据项目类型加载相应的检验结果数据
-                let resultData = [];
-                
-                if (data.itemCode === 'CBC001') {
-                    // 血常规
-                    resultData = [
-                        { name: '白细胞', value: '6.5', unit: '10^9/L', refRange: '4.0-10.0', status: 'normal' },
-                        { name: '红细胞', value: '4.8', unit: '10^12/L', refRange: '4.0-5.5', status: 'normal' },
-                        { name: '血红蛋白', value: '145', unit: 'g/L', refRange: '120-160', status: 'normal' },
-                        { name: '血小板', value: '230', unit: '10^9/L', refRange: '100-300', status: 'normal' },
-                        { name: '中性粒细胞百分比', value: '65.2', unit: '%', refRange: '50.0-70.0', status: 'normal' },
-                        { name: '淋巴细胞百分比', value: '28.3', unit: '%', refRange: '20.0-40.0', status: 'normal' },
-                        { name: '单核细胞百分比', value: '5.2', unit: '%', refRange: '3.0-10.0', status: 'normal' },
-                        { name: '嗜酸性粒细胞百分比', value: '1.2', unit: '%', refRange: '0.0-5.0', status: 'normal' },
-                        { name: '嗜碱性粒细胞百分比', value: '0.1', unit: '%', refRange: '0.0-1.0', status: 'normal' }
-                    ];
-                    document.getElementById('doctorComment').textContent = '患者血常规检查结果基本正常，无明显异常。建议定期复查。';
-                } else if (data.itemCode === 'LFT002') {
-                    // 肝功能
-                    resultData = [
-                        { name: 'ALT', value: '45', unit: 'U/L', refRange: '5-40', status: 'abnormal' },
-                        { name: 'AST', value: '38', unit: 'U/L', refRange: '5-40', status: 'normal' },
-                        { name: '总胆红素', value: '15', unit: 'μmol/L', refRange: '3-20', status: 'normal' },
-                        { name: '直接胆红素', value: '5', unit: 'μmol/L', refRange: '0-7', status: 'normal' },
-                        { name: '间接胆红素', value: '10', unit: 'μmol/L', refRange: '3-13', status: 'normal' },
-                        { name: '总蛋白', value: '72', unit: 'g/L', refRange: '65-85', status: 'normal' },
-                        { name: '白蛋白', value: '45', unit: 'g/L', refRange: '40-55', status: 'normal' },
-                        { name: '球蛋白', value: '27', unit: 'g/L', refRange: '20-30', status: 'normal' },
-                        { name: '白球比', value: '1.67', unit: '', refRange: '1.5-2.5', status: 'normal' }
-                    ];
-                    document.getElementById('doctorComment').textContent = '患者ALT轻度升高，提示可能存在轻微肝功能异常，建议注意休息，清淡饮食，避免过度劳累，两周后复查肝功能。';
-                } else if (data.itemCode === 'TH001') {
-                    // 甲状腺功能
-                    resultData = [
-                        { name: 'TSH', value: '5.6', unit: 'mIU/L', refRange: '0.4-4.0', status: 'abnormal' },
-                        { name: 'FT4', value: '12', unit: 'pmol/L', refRange: '9-25', status: 'normal' },
-                        { name: 'FT3', value: '4.2', unit: 'pmol/L', refRange: '3.5-6.5', status: 'normal' },
-                        { name: 'TT4', value: '105', unit: 'nmol/L', refRange: '60-150', status: 'normal' },
-                        { name: 'TT3', value: '1.8', unit: 'nmol/L', refRange: '1.2-2.8', status: 'normal' },
-                        { name: '抗TPO抗体', value: '28', unit: 'IU/mL', refRange: '0-35', status: 'normal' },
-                        { name: '抗Tg抗体', value: '15', unit: 'IU/mL', refRange: '0-40', status: 'normal' }
-                    ];
-                    document.getElementById('doctorComment').textContent = '患者TSH轻度升高，可能为亚临床甲状腺功能减退，建议3个月后复查甲状腺功能，密切随访。';
-                } else {
-                    // 默认数据
-                    resultData = [
-                        { name: '检验项目1', value: '正常值', unit: '-', refRange: '-', status: 'normal' },
-                        { name: '检验项目2', value: '正常值', unit: '-', refRange: '-', status: 'normal' }
-                    ];
-                    document.getElementById('doctorComment').textContent = '暂无医生评论。';
-                }
-                
-                // 填充结果表格
-                resultData.forEach(item => {
-                    const row = document.createElement('tr');
-                    
-                    // 检验项目
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = item.name;
-                    row.appendChild(nameCell);
-                    
-                    // 结果
-                    const valueCell = document.createElement('td');
-                    valueCell.textContent = item.value;
-                    if (item.status === 'abnormal') {
-                        valueCell.className = 'result-abnormal';
-                    } else if (item.status === 'alert') {
-                        valueCell.className = 'result-alert';
-                    } else {
-                        valueCell.className = 'result-normal';
-                    }
-                    row.appendChild(valueCell);
-                    
-                    // 单位
-                    const unitCell = document.createElement('td');
-                    unitCell.textContent = item.unit;
-                    row.appendChild(unitCell);
-                    
-                    // 参考范围
-                    const refRangeCell = document.createElement('td');
-                    refRangeCell.textContent = item.refRange;
-                    row.appendChild(refRangeCell);
-                    
-                    // 状态
-                    const statusCell = document.createElement('td');
-                    if (item.status === 'abnormal') {
-                        statusCell.innerHTML = '<span class="pb-status pb-status-danger">异常</span>';
-                    } else if (item.status === 'alert') {
-                        statusCell.innerHTML = '<span class="pb-status pb-status-warning">警告</span>';
-                    } else {
-                        statusCell.innerHTML = '<span class="pb-status pb-status-success">正常</span>';
-                    }
-                    row.appendChild(statusCell);
-                    
-                    // 历史结果
-                    const historyCell = document.createElement('td');
-                    historyCell.innerHTML = '<button class="pb-icon-button"><i class="fas fa-history" title="查看历史"></i></button>';
-                    row.appendChild(historyCell);
-                    
-                    resultBody.appendChild(row);
-                });
+                // 更新医生所见所想
+                document.getElementById('doctorComment').textContent = data.doctorComment;
             }
-            
-            // 初始化默认显示血常规数据
-            updateDetailView({ itemCode: 'CBC001', itemName: '血常规', hospital: '市第一医院', date: '2023-01-15' });
         });
     </script>
 </body>
-</html> 
+</html>
