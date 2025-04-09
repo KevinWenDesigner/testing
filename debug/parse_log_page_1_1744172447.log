@@ -1,0 +1,762 @@
+=== 开始解析问诊记录 - 页码: 1 ===
+找到 20 个问诊元素
+
+--- 正在处理第 1 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250409113158334102</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250409113158334102
+从第二个单元格提取患者姓名: 20250409113158334102
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250409113158334102', '20250409113158334102', '宝鸡高新医院', '宝鸡高新医院', '泌尿外科', '泌尿外科', '赵波', '赵波', '姚源', '姚源', '图文问诊', '图文问诊', '2025-04-09 11:31:59', '2025-04-09 11:31:59', '8', '8', '已接诊', '已接诊', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250409113158334102', 'patientName': '20250409113158334102', 'inquiryTime': '2025-04-09 12:20:25', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 2 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408153904377446</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250408153904377446
+从第二个单元格提取患者姓名: 20250408153904377446
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250408153904377446', '20250408153904377446', '宝鸡高新医院', '宝鸡高新医院', '内分泌科', '内分泌科', '丁立新', '丁立新', '王建华', '王建华', '图文问诊', '图文问诊', '2025-04-08 15:39:04', '2025-04-08 15:39:04', '8', '8', '已接诊', '已接诊', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250408153904377446', 'patientName': '20250408153904377446', 'inquiryTime': '2025-04-09 12:20:26', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 3 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408145523251872</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250408145523251872
+从第二个单元格提取患者姓名: 20250408145523251872
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250408145523251872', '20250408145523251872', '宝鸡高新医院', '宝鸡高新医院', '神经外科', '神经外科', '贾永飞', '贾永飞', '程林珊', '程林珊', '视频问诊', '视频问诊', '2025-04-08 14:55:24', '2025-04-08 14:55:24', '5.6', '5.6', '已接诊', '已接诊', '复诊', '复诊']
+成功解析问诊记录: {'inquiryId': '20250408145523251872', 'patientName': '20250408145523251872', 'inquiryTime': '2025-04-09 12:20:27', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 4 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408121232973241</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250408121232973241
+从第二个单元格提取患者姓名: 20250408121232973241
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250408121232973241', '20250408121232973241', '宝鸡高新医院', '宝鸡高新医院', '普通外科', '普通外科', '吴培华', '吴培华', '刘常军', '刘常军', '图文问诊', '图文问诊', '2025-04-08 12:12:32', '2025-04-08 12:12:32', '8', '8', '已接诊', '已接诊', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250408121232973241', 'patientName': '20250408121232973241', 'inquiryTime': '2025-04-09 12:20:28', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 5 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408092946399650</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250408092946399650
+从第二个单元格提取患者姓名: 20250408092946399650
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250408092946399650', '20250408092946399650', '宝鸡高新医院', '宝鸡高新医院', '妇科', '妇科', '赵安红', '赵安红', '张小凤', '张小凤', '图文问诊', '图文问诊', '2025-04-08 09:29:46', '2025-04-08 09:29:46', '8', '8', '未接诊', '未接诊', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250408092946399650', 'patientName': '20250408092946399650', 'inquiryTime': '2025-04-09 12:20:29', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 6 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407170822952393</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250407170822952393
+从第二个单元格提取患者姓名: 20250407170822952393
+提取问诊时间失败: name 're' is not defined
+从单元格找到问诊状态关键词: 已完成
+无法提取科室，使用默认值
+所有单元格文本: ['20250407170822952393', '20250407170822952393', '宝鸡高新医院', '宝鸡高新医院', '泌尿外科', '泌尿外科', '赵波', '赵波', '温童飞', '温童飞', '图文问诊', '图文问诊', '2025-04-07 17:08:23', '2025-04-07 17:08:23', '8', '8', '已完成', '已完成', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250407170822952393', 'patientName': '20250407170822952393', 'inquiryTime': '2025-04-09 12:20:31', 'status': '已完成', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 7 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407160210517150</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250407160210517150
+从第二个单元格提取患者姓名: 20250407160210517150
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['20250407160210517150', '20250407160210517150', '宝鸡高新医院', '宝鸡高新医院', '泌尿外科', '泌尿外科', '高磊', '高磊', '温童飞', '温童飞', '图文问诊', '图文问诊', '2025-04-07 16:02:10', '2025-04-07 16:02:10', '8', '8', '未接诊', '未接诊', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250407160210517150', 'patientName': '20250407160210517150', 'inquiryTime': '2025-04-09 12:20:32', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 8 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407155810113159</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250407155810113159
+从第二个单元格提取患者姓名: 20250407155810113159
+提取问诊时间失败: name 're' is not defined
+从单元格找到问诊状态关键词: 已完成
+无法提取科室，使用默认值
+所有单元格文本: ['20250407155810113159', '20250407155810113159', '宝鸡高新医院', '宝鸡高新医院', '妇科', '妇科', '赵安红', '赵安红', '倪晓燕', '倪晓燕', '图文问诊', '图文问诊', '2025-04-07 15:58:11', '2025-04-07 15:58:11', '8', '8', '已完成', '已完成', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250407155810113159', 'patientName': '20250407155810113159', 'inquiryTime': '2025-04-09 12:20:33', 'status': '已完成', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 9 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407081239367837</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250407081239367837
+从第二个单元格提取患者姓名: 20250407081239367837
+提取问诊时间失败: name 're' is not defined
+从单元格找到问诊状态关键词: 已完成
+无法提取科室，使用默认值
+所有单元格文本: ['20250407081239367837', '20250407081239367837', '宝鸡高新医院', '宝鸡高新医院', '创伤骨关节专科', '创伤骨关节专科', '祁文兵', '祁文兵', '辛枝', '辛枝', '图文问诊', '图文问诊', '2025-04-07 08:12:39', '2025-04-07 08:12:39', '8', '8', '已完成', '已完成', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250407081239367837', 'patientName': '20250407081239367837', 'inquiryTime': '2025-04-09 12:20:34', 'status': '已完成', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 10 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407012735021775</span></div></td><td rowspan...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: 20250407012735021775
+从第二个单元格提取患者姓名: 20250407012735021775
+提取问诊时间失败: name 're' is not defined
+从单元格找到问诊状态关键词: 超时
+无法提取科室，使用默认值
+所有单元格文本: ['20250407012735021775', '20250407012735021775', '宝鸡高新医院', '宝鸡高新医院', '妇科', '妇科', '赵安红', '赵安红', '文星娟', '文星娟', '图文问诊', '图文问诊', '2025-04-07 01:27:36', '2025-04-07 01:27:36', '8', '8', '超时取消', '超时取消', '咨询', '咨询']
+成功解析问诊记录: {'inquiryId': '20250407012735021775', 'patientName': '20250407012735021775', 'inquiryTime': '2025-04-09 12:20:35', 'status': '超时', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 11 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250409113158334102</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172436_8739
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172436_8739', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:36', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 12 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408153904377446</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172437_2049
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172437_2049', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:38', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 13 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408145523251872</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172439_4723
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 电子病历 问诊记录', '详情 电子病历 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172439_4723', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:39', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 14 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408121232973241</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172440_3459
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172440_3459', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:40', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 15 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250408092946399650</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172441_9025
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172441_9025', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:41', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 16 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407170822952393</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172442_7574
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['退款 详情 问诊记录', '退款 详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172442_7574', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:42', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 17 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407160210517150</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172443_9271
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172443_9271', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:43', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 18 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407155810113159</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172444_6559
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['退款 详情 问诊记录', '退款 详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172444_6559', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:44', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 19 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407081239367837</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172445_3789
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['退款 详情 问诊记录', '退款 详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172445_3789', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:45', 'status': '未知', 'department': '未知科室', 'page': 1}
+
+--- 正在处理第 20 个问诊元素 ---
+元素HTML: <tr class="el-table__row"><td rowspan="1" colspan="1" class="el-table_1_column_1 is-center  is-hidden el-table__cell"><div class="cell"><span data-v-2bd89f16="">20250407012735021775</span></div></td><...
+未找到详情链接或提取失败: Message: no such element: Unable to locate element: {"method":"css selector","selector":"a[href*='inquiry']"}
+  (Session info: chrome=135.0.7049.42)
+Stacktrace:
+	GetHandleVerifier [0x00AD80E3+60707]
+	GetHandleVerifier [0x00AD8124+60772]
+	(No symbol) [0x00900683]
+	(No symbol) [0x00948660]
+	(No symbol) [0x009489FB]
+	(No symbol) [0x0093DD81]
+	(No symbol) [0x0096D094]
+	(No symbol) [0x0093DCA4]
+	(No symbol) [0x0096D2C4]
+	(No symbol) [0x0098E824]
+	(No symbol) [0x0096CE46]
+	(No symbol) [0x0093C5D3]
+	(No symbol) [0x0093D424]
+	GetHandleVerifier [0x00D1BBC3+2435075]
+	GetHandleVerifier [0x00D17163+2416035]
+	GetHandleVerifier [0x00D3350C+2531660]
+	GetHandleVerifier [0x00AEF1B5+155125]
+	GetHandleVerifier [0x00AF5B5D+182173]
+	GetHandleVerifier [0x00ADF9B8+91640]
+	GetHandleVerifier [0x00ADFB60+92064]
+	GetHandleVerifier [0x00ACA620+4704]
+	BaseThreadInitThunk [0x76487BA9+25]
+	RtlInitializeExceptionChain [0x77E1BD2B+107]
+	RtlClearBits [0x77E1BCAF+191]
+
+从元素直接提取到问诊ID: TEMP_1744172446_6330
+从第二个单元格提取患者姓名: 
+提取问诊时间失败: name 're' is not defined
+无法提取问诊状态，使用默认值
+无法提取科室，使用默认值
+所有单元格文本: ['详情 问诊记录', '详情 问诊记录']
+成功解析问诊记录: {'inquiryId': 'TEMP_1744172446_6330', 'patientName': '', 'inquiryTime': '2025-04-09 12:20:46', 'status': '未知', 'department': '未知科室', 'page': 1}

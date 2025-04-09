@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基层非预存金改造追踪</title>
+    <!-- 引入图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f5f5f5;
+            --card-background: #ffffff;
+            --text-color: #333333;
+            --text-secondary: #7f8c8d;
+            --border-color: #dddddd;
+            --hover-color: #f9f9f9;
+        }
+        
+        .dark-mode {
+            --primary-color: #2980b9;
+            --secondary-color: #27ae60;
+            --background-color: #1a1a1a;
+            --card-background: #2c2c2c;
+            --text-color: #f0f0f0;
+            --text-secondary: #aaaaaa;
+            --border-color: #444444;
+            --hover-color: #383838;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-background);
+            border-right: 1px solid var(--border-color);
+            padding: 20px 0;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            padding: 10px 20px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-item i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .nav-item.active {
+            border-left-color: var(--primary-color);
+            background-color: var(--hover-color);
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        /* 顶部控制栏 */
+        .control-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .controls-left {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .view-switch, .filter-options, .sort-options {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-background);
+            border-radius: 4px;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .view-option, .filter-option, .sort-option {
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        
+        .view-option:hover, .filter-option:hover, .sort-option:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .view-option.active, .filter-option.active, .sort-option.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .controls-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-background);
+            border-radius: 4px;
+            padding: 5px 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 5px;
+            outline: none;
+            color: var(--text-color);
+            font-size: 14px;
+            width: 200px;
+        }
+        
+        .search-box i {
+            color: var(--text-secondary);
+        }
+        
+        .theme-toggle {
+            background-color: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 40px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        /* 任务容器 */
+        .main-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+        
+        .task-container {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        /* 列表视图 */
+        .task-list {
+            list-style-type: none;
+        }
+        
+        .task-item {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: flex-start;
+            transition: background-color 0.2s;
+        }
+        
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        
+        .task-item:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .task-checkbox {
+            margin-right: 15px;
+            margin-top: 5px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        
+        .task-content {
+            flex: 1;
+        }
+        
+        .task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        
+        .task-title {
+            font-weight: bold;
+            color: var(--text-color);
+            transition: color 0.3s;
+        }
+        
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+        
+        .task-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        
+        .task-priority {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            display: inline-block;
+        }
+        
+        .priority-high {
+            background-color: #ff7675;
+            color: white;
+        }
+        
+        .priority-medium {
+            background-color: #fdcb6e;
+            color: #333;
+        }
+        
+        .priority-low {
+            background-color: #74b9ff;
+            color: white;
+        }
+        
+        .task-category {
+            background-color: #a29bfe;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+        
+        .task-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .task-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        
+        .task-action-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .task-details {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .task-description {
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .completion-time {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        /* 卡片视图 */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .task-card {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* 底部统计栏 */
+        .footer-stats {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progress-area {
+            flex: 1;
+            max-width: 500px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            width: 500px;
+            max-width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-background);
+            color: var(--text-color);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--card-background);
+            color: var(--text-color);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 10px 0;
+            }
+            
+            .control-bar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .controls-left, .controls-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 侧边导航 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>基层非预交金改造</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="dashboard">
+                    <i class="bi bi-speedometer2"></i> 仪表盘
+                </li>
+                <li class="nav-item" data-section="registration">
+                    <i class="bi bi-person-plus"></i> 挂号模块
+                </li>
+                <li class="nav-item" data-section="billing">
+                    <i class="bi bi-cash-coin"></i> 划价收费
+                </li>
+                <li class="nav-item" data-section="testing">
+                    <i class="bi bi-check2-square"></i> 待测试项目
+                </li>
+                <li class="nav-item" data-section="statistics">
+                    <i class="bi bi-bar-chart"></i> 数据统计
+                </li>
+                <li class="nav-item" data-section="settings">
+                    <i class="bi bi-gear"></i> 设置
+                </li>
+            </ul>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 顶部控制栏 -->
+            <div class="control-bar">
+                <div class="controls-left">
+                    <div class="view-switch">
+                        <div class="view-option active" data-view="list">
+                            <i class="bi bi-list-ul"></i> 列表
+                        </div>
+                        <div class="view-option" data-view="grid">
+                            <i class="bi bi-grid"></i> 卡片
+                        </div>
+                    </div>
+                    
+                    <div class="filter-options">
+                        <div class="filter-option active" data-filter="all">全部</div>
+                        <div class="filter-option" data-filter="pending">待办</div>
+                        <div class="filter-option" data-filter="completed">已完成</div>
+                    </div>
+                    
+                    <div class="sort-options">
+                        <div class="sort-option active" data-sort="priority">优先级</div>
+                        <div class="sort-option" data-sort="date">日期</div>
+                    </div>
+                </div>
+                
+                <div class="controls-right">
+                    <div class="search-box">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="task-search" placeholder="搜索任务...">
+                    </div>
+                    
+                    <div class="theme-toggle" id="theme-toggle">
+                        <i class="bi bi-moon"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 仪表盘部分 -->
+            <div class="section-container" id="dashboard-section">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">概览</h2>
+                        <button class="btn btn-primary" id="add-task-btn">
+                            <i class="bi bi-plus"></i> 新建任务
+                        </button>
+                    </div>
+                    
+                    <!-- 状态卡片 -->
+                    <div class="task-grid">
+                        <div class="task-card">
+                            <h3><i class="bi bi-list-check"></i> 总任务</h3>
+                            <div style="font-size: 2rem; margin: 10px 0;" id="total-tasks">16</div>
+                            <div style="color: var(--text-secondary);">全部任务数量</div>
+                        </div>
+                        
+                        <div class="task-card">
+                            <h3><i class="bi bi-check2-circle"></i> 已完成</h3>
+                            <div style="font-size: 2rem; margin: 10px 0;" id="completed-tasks">0</div>
+                            <div style="color: var(--text-secondary);">已完成的任务</div>
+                        </div>
+                        
+                        <div class="task-card">
+                            <h3><i class="bi bi-hourglass-split"></i> 进行中</h3>
+                            <div style="font-size: 2rem; margin: 10px 0;" id="pending-tasks">16</div>
+                            <div style="color: var(--text-secondary);">待处理的任务</div>
+                        </div>
+                        
+                        <div class="task-card">
+                            <h3><i class="bi bi-exclamation-triangle"></i> 高优先级</h3>
+                            <div style="font-size: 2rem; margin: 10px 0;" id="high-priority-tasks">5</div>
+                            <div style="color: var(--text-secondary);">需优先处理</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 近期活动 -->
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">近期活动</h2>
+                    </div>
+                    
+                    <div class="task-container" id="recent-activities">
+                        <!-- 近期活动列表将通过JS动态生成 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 挂号模块部分 -->
+            <div class="section-container" id="registration-section" style="display: none;">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">挂号模块任务</h2>
+                        <button class="btn btn-primary" id="add-reg-task-btn">
+                            <i class="bi bi-plus"></i> 添加任务
+                        </button>
+                    </div>
+                    
+                    <div class="task-container">
+                        <ul class="task-list" id="registration-tasks">
+                            <!-- 任务列表将通过JS动态生成 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 划价收费模块部分 -->
+            <div class="section-container" id="billing-section" style="display: none;">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">划价收费模块任务</h2>
+                        <button class="btn btn-primary" id="add-bill-task-btn">
+                            <i class="bi bi-plus"></i> 添加任务
+                        </button>
+                    </div>
+                    
+                    <div class="task-container">
+                        <ul class="task-list" id="billing-tasks">
+                            <!-- 任务列表将通过JS动态生成 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 待测试项目部分 -->
+            <div class="section-container" id="testing-section" style="display: none;">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">待测试项目</h2>
+                        <button class="btn btn-primary" id="add-test-task-btn">
+                            <i class="bi bi-plus"></i> 添加任务
+                        </button>
+                    </div>
+                    
+                    <div class="task-container">
+                        <ul class="task-list" id="testing-tasks">
+                            <!-- 任务列表将通过JS动态生成 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 数据统计部分 -->
+            <div class="section-container" id="statistics-section" style="display: none;">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">数据统计</h2>
+                    </div>
+                    
+                    <div class="task-container" style="padding: 10px;">
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                            <div>
+                                <h3 style="font-size: 0.9rem; margin-bottom: 5px;">完成趋势</h3>
+                                <canvas id="completion-trend-chart" height="150"></canvas>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.9rem; margin-bottom: 5px;">模块完成情况</h3>
+                                <canvas id="module-completion-chart" height="150"></canvas>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.9rem; margin-bottom: 5px;">优先级分布</h3>
+                                <canvas id="priority-chart" height="110"></canvas>
+                            </div>
+                            <div>
+                                <h3 style="font-size: 0.9rem; margin-bottom: 5px;">完成时间分布</h3>
+                                <canvas id="completion-time-chart" height="150"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 设置部分 -->
+            <div class="section-container" id="settings-section" style="display: none;">
+                <div class="main-section">
+                    <div class="section-header">
+                        <h2 class="section-title">系统设置</h2>
+                    </div>
+                    
+                    <div class="task-container">
+                        <div class="form-group">
+                            <h3>显示设置</h3>
+                            <div style="margin: 15px 0;">
+                                <label class="form-label">默认视图</label>
+                                <select class="form-select" id="default-view-setting">
+                                    <option value="list">列表视图</option>
+                                    <option value="grid">卡片视图</option>
+                                </select>
+                            </div>
+                            <div style="margin: 15px 0;">
+                                <label class="form-label">默认主题</label>
+                                <select class="form-select" id="default-theme-setting">
+                                    <option value="light">浅色模式</option>
+                                    <option value="dark">深色模式</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <h3>数据管理</h3>
+                            <div style="margin: 15px 0;">
+                                <button class="btn btn-primary" id="export-all-btn">导出所有数据</button>
+                                <button class="btn btn-secondary" id="import-data-btn" style="margin-left: 10px;">导入数据</button>
+                            </div>
+                            <div style="margin: 15px 0;">
+                                <label class="form-label">自动备份频率</label>
+                                <select class="form-select" id="backup-frequency">
+                                    <option value="daily">每天</option>
+                                    <option value="weekly">每周</option>
+                                    <option value="monthly">每月</option>
+                                    <option value="never">从不</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 底部统计栏 -->
+            <div class="footer-stats">
+                <div class="progress-area">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress-bar"></div>
+                    </div>
+                    <p class="progress-text" id="progress-text">已完成：0/16 任务 (0%)</p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="export-report-btn">
+                        <i class="bi bi-file-earmark-text"></i> 导出报表
+                    </button>
+                    <button class="btn btn-secondary" id="save-button">
+                        <i class="bi bi-save"></i> 保存进度
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 任务详情模态框 -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">任务详情</h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="task-form">
+                    <div class="form-group">
+                        <label for="task-title" class="form-label">任务标题</label>
+                        <input type="text" id="task-title" class="form-control" placeholder="输入任务标题">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-description" class="form-label">任务描述</label>
+                        <textarea id="task-description" class="form-control" rows="3" placeholder="输入任务描述"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-priority" class="form-label">优先级</label>
+                        <select id="task-priority" class="form-select">
+                            <option value="high">高</option>
+                            <option value="medium">中</option>
+                            <option value="low">低</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-category" class="form-label">分类</label>
+                        <select id="task-category" class="form-select">
+                            <option value="feature">功能优化</option>
+                            <option value="bug">Bug修复</option>
+                            <option value="test">测试</option>
+                            <option value="other">其他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-assignee" class="form-label">负责人</label>
+                        <input type="text" id="task-assignee" class="form-control" placeholder="输入负责人姓名">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-due-date" class="form-label">预计完成时间</label>
+                        <input type="date" id="task-due-date" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="task-module" class="form-label">所属模块</label>
+                        <select id="task-module" class="form-select">
+                            <option value="registration">挂号模块</option>
+                            <option value="billing">划价收费</option>
+                            <option value="testing">测试项目</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-task">取消</button>
+                        <button type="submit" class="btn btn-primary" id="save-task">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 引入Chart.js库 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // 基础任务数据 - 这些将被保存到localStorage
+        let tasksData = {
+            registrationTasks: [
+                { id: 'reg-task-1', title: '修复挂号微信支付宝支付未跳转统一支付扫码的问题', description: '当用户使用微信或支付宝支付时，系统未正确跳转到统一支付扫码页面。', completed: false, priority: 'high', category: 'bug', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-2', title: '修复CLINIC_MASTER因VISIT_DATE格式改变导致挂号信息不显示的问题', description: 'VISIT_DATE格式改变导致CLINIC_MASTER表中的挂号信息无法正确显示。', completed: false, priority: 'high', category: 'bug', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-3', title: '挂号信息增加支付方式字段，并修复导出功能', description: '需要在挂号信息中添加支付方式字段，并确保导出功能正常工作。', completed: false, priority: 'medium', category: 'feature', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-4', title: '确认挂号是否支持预交金支付', description: '需要验证系统是否支持使用预交金进行挂号支付。', completed: false, priority: 'medium', category: 'test', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-5', title: '完善微信支付宝退号退费流程', description: '当用户通过微信或支付宝支付后退号时，需要完善退费流程。', completed: false, priority: 'high', category: 'feature', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-6', title: '优化挂号科室、号别、看诊医生的校验逻辑，过滤不必要选项', description: '优化挂号流程中的选项筛选，确保用户只看到相关选项。', completed: false, priority: 'low', category: 'feature', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-7', title: '实现重复挂号限制及3日内就诊免挂号费逻辑规则（含退号情况的判断）', description: '添加逻辑以限制重复挂号，并实现3日内就诊免挂号费的规则，包括退号情况的判断。', completed: false, priority: 'high', category: 'feature', assignee: '', dueDate: '', module: 'registration', completionTime: null },
+                { id: 'reg-task-8', title: '为3日内就诊免挂号费患者增加提示，并生成免费挂号信息', description: '当患者符合3日内就诊免挂号费条件时，显示提示并生成免费挂号信息。', completed: false, priority: 'medium', category: 'feature', assignee: '', dueDate: '', module: 'registration', completionTime: null }
+            ],
+            billingTasks: [
+                { id: 'bill-task-1', title: '修复参数选择并行时预交金余额不显示的问题', description: '在并行参数选择模式下，预交金余额无法正确显示。', completed: false, priority: 'high', category: 'bug', assignee: '', dueDate: '', module: 'billing', completionTime: null },
+                { id: 'bill-task-2', title: '评估预交金是否可与其他支付方式合并支付', description: '研究并实现预交金与其他支付方式（如微信、支付宝）的合并支付功能。', completed: false, priority: 'medium', category: 'feature', assignee: '', dueDate: '', module: 'billing', completionTime: null }
+            ],
+            testingTasks: [
+                { id: 'test-task-1', title: '测试折扣费别患者开单后收费提取明细金额是否为折扣后金额', description: '验证系统是否正确计算折扣费别患者的明细金额。', completed: false, priority: 'medium', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null },
+                { id: 'test-task-2', title: '测试检验项目扣费是否正确同步Lis条码状态', description: '确认检验项目扣费后，Lis条码状态是否正确同步。', completed: false, priority: 'medium', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null },
+                { id: 'test-task-3', title: '医保结算全流程测试', description: '进行医保结算的全流程测试，确保所有环节正常工作。', completed: false, priority: 'high', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null },
+                { id: 'test-task-4', title: '测试微信、支付宝+医保支付发票显示情况', description: '验证使用微信、支付宝结合医保支付的情况下，发票显示是否正确。', completed: false, priority: 'low', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null },
+                { id: 'test-task-5', title: '测试检验项目部分完成时的退费流程', description: '测试当检验项目只部分完成时的退费流程是否正确。', completed: false, priority: 'medium', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null },
+                { id: 'test-task-6', title: '测试退结算后预交金记录表插入情况', description: '验证退结算操作后，预交金记录表的数据插入是否正确。', completed: false, priority: 'low', category: 'test', assignee: '', dueDate: '', module: 'testing', completionTime: null }
+            ]
+        };
+        
+        // 活动日志
+        let activityLogs = [];
+        
+        // DOM元素快捷访问
+        const elements = {
+            navItems: document.querySelectorAll('.nav-item'),
+            sections: document.querySelectorAll('.section-container'),
+            viewOptions: document.querySelectorAll('.view-option'),
+            filterOptions: document.querySelectorAll('.filter-option'),
+            sortOptions: document.querySelectorAll('.sort-option'),
+            themeToggle: document.getElementById('theme-toggle'),
+            progressBar: document.getElementById('progress-bar'),
+            progressText: document.getElementById('progress-text'),
+            saveButton: document.getElementById('save-button'),
+            exportReportBtn: document.getElementById('export-report-btn'),
+            taskSearchInput: document.getElementById('task-search'),
+            
+            // 模态框元素
+            taskModal: document.getElementById('task-modal'),
+            modalTitle: document.getElementById('modal-title'),
+            closeModal: document.getElementById('close-modal'),
+            taskForm: document.getElementById('task-form'),
+            cancelTaskBtn: document.getElementById('cancel-task'),
+            
+            // 添加任务按钮
+            addTaskBtn: document.getElementById('add-task-btn'),
+            addRegTaskBtn: document.getElementById('add-reg-task-btn'),
+            addBillTaskBtn: document.getElementById('add-bill-task-btn'),
+            addTestTaskBtn: document.getElementById('add-test-task-btn'),
+            
+            // 任务列表容器
+            registrationTasks: document.getElementById('registration-tasks'),
+            billingTasks: document.getElementById('billing-tasks'),
+            testingTasks: document.getElementById('testing-tasks'),
+            recentActivities: document.getElementById('recent-activities'),
+            
+            // 统计数字
+            totalTasksCount: document.getElementById('total-tasks'),
+            completedTasksCount: document.getElementById('completed-tasks'),
+            pendingTasksCount: document.getElementById('pending-tasks'),
+            highPriorityTasksCount: document.getElementById('high-priority-tasks'),
+            
+            // 设置页面元素
+            defaultViewSetting: document.getElementById('default-view-setting'),
+            defaultThemeSetting: document.getElementById('default-theme-setting'),
+            exportAllBtn: document.getElementById('export-all-btn'),
+            importDataBtn: document.getElementById('import-data-btn'),
+            backupFrequency: document.getElementById('backup-frequency')
+        };
+        
+        // 当前应用状态
+        const appState = {
+            currentSection: 'dashboard',
+            currentView: 'list',
+            currentFilter: 'all',
+            currentSort: 'priority',
+            isDarkMode: false,
+            currentEditingTask: null
+        };
+        
+        // 初始化应用
+        function initApp() {
+            // 加载保存的数据
+            loadDataFromStorage();
+            
+            // 初始化导航
+            initNavigation();
+            
+            // 初始化视图切换
+            initViewSwitching();
+            
+            // 初始化过滤和排序
+            initFilterAndSort();
+            
+            // 初始化主题切换
+            initThemeToggle();
+            
+            // 初始化任务列表
+            renderAllTaskLists();
+            
+            // 初始化仪表盘统计
+            updateDashboardStats();
+            
+            // 初始化活动日志
+            renderRecentActivities();
+            
+            // 初始化模态框事件
+            initModalEvents();
+            
+            // 初始化添加任务按钮事件
+            initAddTaskEvents();
+            
+            // 初始化搜索功能
+            initSearchFunctionality();
+            
+            // 初始化图表
+            initCharts();
+            
+            // 初始化设置页面
+            initSettingsPage();
+            
+            // 初始化导出报表按钮
+            initExportReport();
+            
+            // 初始化保存按钮
+            initSaveButton();
+        }
+        
+        // 从localStorage加载数据
+        function loadDataFromStorage() {
+            const savedTasks = localStorage.getItem('hospitalTasksData');
+            const savedActivities = localStorage.getItem('hospitalActivitiesData');
+            const savedAppState = localStorage.getItem('hospitalAppState');
+            
+            if (savedTasks) {
+                tasksData = JSON.parse(savedTasks);
+            }
+            
+            if (savedActivities) {
+                activityLogs = JSON.parse(savedActivities);
+            }
+            
+            if (savedAppState) {
+                const parsedState = JSON.parse(savedAppState);
+                appState.currentView = parsedState.currentView || 'list';
+                appState.currentFilter = parsedState.currentFilter || 'all';
+                appState.currentSort = parsedState.currentSort || 'priority';
+                appState.isDarkMode = parsedState.isDarkMode || false;
+                
+                // 应用主题
+                if (appState.isDarkMode) {
+                    document.body.classList.add('dark-mode');
+                    elements.themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+                }
+                
+                // 应用视图、过滤和排序设置
+                elements.viewOptions.forEach(option => {
+                    option.classList.toggle('active', option.dataset.view === appState.currentView);
+                });
+                
+                elements.filterOptions.forEach(option => {
+                    option.classList.toggle('active', option.dataset.filter === appState.currentFilter);
+                });
+                
+                elements.sortOptions.forEach(option => {
+                    option.classList.toggle('active', option.dataset.sort === appState.currentSort);
+                });
+            }
+        }
+        
+        // 初始化导航
+        function initNavigation() {
+            elements.navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // 更新导航项目活跃状态
+                    elements.navItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    item.classList.add('active');
+                    
+                    // 显示相应部分
+                    const sectionId = item.dataset.section;
+                    appState.currentSection = sectionId;
+                    
+                    elements.sections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    document.getElementById(`${sectionId}-section`).style.display = 'block';
+                    
+                    // 保存应用状态
+                    saveAppState();
+                });
+            });
+        }
+        
+        // 初始化视图切换
+        function initViewSwitching() {
+            elements.viewOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    elements.viewOptions.forEach(viewOption => {
+                        viewOption.classList.remove('active');
+                    });
+                    option.classList.add('active');
+                    
+                    appState.currentView = option.dataset.view;
+                    renderAllTaskLists();
+                    
+                    // 保存应用状态
+                    saveAppState();
+                });
+            });
+        }
+        
+        // 初始化过滤和排序
+        function initFilterAndSort() {
+            elements.filterOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    elements.filterOptions.forEach(filterOption => {
+                        filterOption.classList.remove('active');
+                    });
+                    option.classList.add('active');
+                    
+                    appState.currentFilter = option.dataset.filter;
+                    renderAllTaskLists();
+                    
+                    // 保存应用状态
+                    saveAppState();
+                });
+            });
+            
+            elements.sortOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    elements.sortOptions.forEach(sortOption => {
+                        sortOption.classList.remove('active');
+                    });
+                    option.classList.add('active');
+                    
+                    appState.currentSort = option.dataset.sort;
+                    renderAllTaskLists();
+                    
+                    // 保存应用状态
+                    saveAppState();
+                });
+            });
+        }
+        
+        // 初始化主题切换
+        function initThemeToggle() {
+            elements.themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                appState.isDarkMode = document.body.classList.contains('dark-mode');
+                
+                if (appState.isDarkMode) {
+                    elements.themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+                } else {
+                    elements.themeToggle.innerHTML = '<i class="bi bi-moon"></i>';
+                }
+                
+                // 更新图表主题
+                updateChartsTheme();
+                
+                // 保存应用状态
+                saveAppState();
+            });
+        }
+        
+        // 格式化日期时间
+        function formatDateTime(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+        
+        // 格式化日期
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        // 获取所有任务
+        function getAllTasks() {
+            return [
+                ...tasksData.registrationTasks,
+                ...tasksData.billingTasks,
+                ...tasksData.testingTasks
+            ];
+        }
+        
+        // 保存应用状态
+        function saveAppState() {
+            localStorage.setItem('hospitalAppState', JSON.stringify(appState));
+        }
+        
+        // 保存任务数据
+        function saveTasksData() {
+            localStorage.setItem('hospitalTasksData', JSON.stringify(tasksData));
+            localStorage.setItem('hospitalActivitiesData', JSON.stringify(activityLogs));
+        }
+        
+        // 添加活动日志
+        function addActivityLog(action, taskId, taskTitle, taskModule) {
+            const timestamp = new Date();
+            activityLogs.unshift({
+                action,
+                taskId,
+                taskTitle,
+                taskModule,
+                timestamp: formatDateTime(timestamp)
+            });
+            
+            // 限制日志数量，只保留最近30条
+            if (activityLogs.length > 30) {
+                activityLogs = activityLogs.slice(0, 30);
+            }
+            
+            // 如果在仪表盘页面，更新活动日志显示
+            if (appState.currentSection === 'dashboard') {
+                renderRecentActivities();
+            }
+            
+            // 保存活动日志
+            saveTasksData();
+        }
+        
+        // 渲染所有任务列表
+        function renderAllTaskLists() {
+            renderTaskList(tasksData.registrationTasks, elements.registrationTasks);
+            renderTaskList(tasksData.billingTasks, elements.billingTasks);
+            renderTaskList(tasksData.testingTasks, elements.testingTasks);
+            updateProgress();
+        }
+        
+        // 渲染任务列表
+        function renderTaskList(tasks, container) {
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 应用过滤
+            let filteredTasks = tasks;
+            if (appState.currentFilter === 'pending') {
+                filteredTasks = tasks.filter(task => !task.completed);
+            } else if (appState.currentFilter === 'completed') {
+                filteredTasks = tasks.filter(task => task.completed);
+            }
+            
+            // 应用排序
+            if (appState.currentSort === 'priority') {
+                const priorityOrder = { high: 1, medium: 2, low: 3 };
+                filteredTasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+            } else if (appState.currentSort === 'date') {
+                filteredTasks.sort((a, b) => {
+                    if (a.completionTime && b.completionTime) {
+                        return new Date(b.completionTime) - new Date(a.completionTime);
+                    } else if (a.completionTime) {
+                        return -1;
+                    } else if (b.completionTime) {
+                        return 1;
+                    } else {
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                    }
+                });
+            }
+            
+            // 根据当前视图选择渲染函数
+            if (appState.currentView === 'list') {
+                renderListView(filteredTasks, container);
+            } else {
+                renderGridView(filteredTasks, container);
+            }
+        }
+        
+        // 渲染列表视图
+        function renderListView(tasks, container) {
+            if (tasks.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-secondary);">没有符合条件的任务</div>';
+                return;
+            }
+            
+            tasks.forEach(task => {
+                const taskElement = document.createElement('li');
+                taskElement.className = `task-item ${task.completed ? 'completed' : ''}`;
+                taskElement.dataset.id = task.id;
+                
+                const priorityClass = `priority-${task.priority}`;
+                const categoryText = getCategoryText(task.category);
+                
+                taskElement.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" id="checkbox-${task.id}" ${task.completed ? 'checked' : ''}>
+                    <div class="task-content">
+                        <div class="task-header">
+                            <div class="task-title">${task.title}</div>
+                            <div class="task-meta">
+                                <span class="task-priority ${priorityClass}">${getPriorityText(task.priority)}</span>
+                                <span class="task-category">${categoryText}</span>
+                            </div>
+                        </div>
+                        <div class="task-details" style="display: none;">
+                            <div class="task-description">${task.description || '无描述'}</div>
+                        </div>
+                        <div class="completion-time" id="time-${task.id}">
+                            ${task.completionTime ? `完成时间: ${task.completionTime}` : ''}
+                        </div>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-action-btn toggle-details" title="显示/隐藏详情">
+                            <i class="bi bi-three-dots"></i>
+                        </button>
+                        <button class="task-action-btn edit-task" title="编辑任务">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="task-action-btn delete-task" title="删除任务">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                container.appendChild(taskElement);
+                
+                // 添加复选框事件
+                const checkbox = taskElement.querySelector('.task-checkbox');
+                checkbox.addEventListener('change', function() {
+                    handleTaskStatusChange(task, this.checked);
+                });
+                
+                // 添加显示/隐藏详情按钮事件
+                const toggleDetailsBtn = taskElement.querySelector('.toggle-details');
+                toggleDetailsBtn.addEventListener('click', function() {
+                    const details = taskElement.querySelector('.task-details');
+                    if (details.style.display === 'none') {
+                        details.style.display = 'block';
+                        this.innerHTML = '<i class="bi bi-chevron-up"></i>';
+                    } else {
+                        details.style.display = 'none';
+                        this.innerHTML = '<i class="bi bi-three-dots"></i>';
+                    }
+                });
+                
+                // 添加编辑按钮事件
+                const editBtn = taskElement.querySelector('.edit-task');
+                editBtn.addEventListener('click', function() {
+                    openTaskModal(task);
+                });
+                
+                // 添加删除按钮事件
+                const deleteBtn = taskElement.querySelector('.delete-task');
+                deleteBtn.addEventListener('click', function() {
+                    if (confirm(`确定要删除任务"${task.title}"吗？`)) {
+                        deleteTask(task);
+                    }
+                });
+            });
+        }
+        
+        // 渲染卡片视图
+        function renderGridView(tasks, container) {
+            // 创建卡片容器
+            const gridContainer = document.createElement('div');
+            gridContainer.className = 'task-grid';
+            container.appendChild(gridContainer);
+            
+            if (tasks.length === 0) {
+                gridContainer.innerHTML = '<div style="text-align: center; grid-column: 1/-1; padding: 20px; color: var(--text-secondary);">没有符合条件的任务</div>';
+                return;
+            }
+            
+            tasks.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = `task-card ${task.completed ? 'completed' : ''}`;
+                taskCard.dataset.id = task.id;
+                
+                const priorityClass = `priority-${task.priority}`;
+                const categoryText = getCategoryText(task.category);
+                
+                taskCard.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <span class="task-priority ${priorityClass}">${getPriorityText(task.priority)}</span>
+                        <div>
+                            <input type="checkbox" class="task-checkbox" id="checkbox-card-${task.id}" ${task.completed ? 'checked' : ''}>
+                        </div>
+                    </div>
+                    <h3 class="task-title" style="margin-bottom: 10px;">${task.title}</h3>
+                    <div class="task-description" style="margin-bottom: 15px; font-size: 0.9rem;">${task.description || '无描述'}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px;">
+                        <span class="task-category">${categoryText}</span>
+                    </div>
+                    <div class="completion-time" style="font-size: 0.85rem; color: var(--text-secondary);">
+                        ${task.completionTime ? `完成时间: ${task.completionTime}` : ''}
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 10px; gap: 10px;">
+                        <button class="task-action-btn edit-task" title="编辑任务">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="task-action-btn delete-task" title="删除任务">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                gridContainer.appendChild(taskCard);
+                
+                // 添加复选框事件
+                const checkbox = taskCard.querySelector('.task-checkbox');
+                checkbox.addEventListener('change', function() {
+                    handleTaskStatusChange(task, this.checked);
+                });
+                
+                // 添加编辑按钮事件
+                const editBtn = taskCard.querySelector('.edit-task');
+                editBtn.addEventListener('click', function() {
+                    openTaskModal(task);
+                });
+                
+                // 添加删除按钮事件
+                const deleteBtn = taskCard.querySelector('.delete-task');
+                deleteBtn.addEventListener('click', function() {
+                    if (confirm(`确定要删除任务"${task.title}"吗？`)) {
+                        deleteTask(task);
+                    }
+                });
+            });
+        }
+        
+        // 处理任务状态变更
+        function handleTaskStatusChange(task, isChecked) {
+            // 获取对应的任务数组
+            let taskArray;
+            let moduleKey;
+            
+            if (task.module === 'registration') {
+                taskArray = tasksData.registrationTasks;
+                moduleKey = 'registrationTasks';
+            } else if (task.module === 'billing') {
+                taskArray = tasksData.billingTasks;
+                moduleKey = 'billingTasks';
+            } else if (task.module === 'testing') {
+                taskArray = tasksData.testingTasks;
+                moduleKey = 'testingTasks';
+            }
+            
+            // 找到相应的任务
+            const taskIndex = taskArray.findIndex(t => t.id === task.id);
+            if (taskIndex === -1) return;
+            
+            // 更新任务状态
+            taskArray[taskIndex].completed = isChecked;
+            
+            // 更新完成时间
+            if (isChecked) {
+                const now = new Date();
+                const formattedTime = formatDateTime(now);
+                taskArray[taskIndex].completionTime = formattedTime;
+                
+                // 显示完成时间
+                const timeElement = document.getElementById(`time-${task.id}`);
+                if (timeElement) {
+                    timeElement.textContent = `完成时间: ${formattedTime}`;
+                }
+                
+                // 添加活动日志
+                addActivityLog('完成', task.id, task.title, task.module);
+            } else {
+                taskArray[taskIndex].completionTime = null;
+                
+                // 清除完成时间显示
+                const timeElement = document.getElementById(`time-${task.id}`);
+                if (timeElement) {
+                    timeElement.textContent = '';
+                }
+                
+                // 添加活动日志
+                addActivityLog('取消完成', task.id, task.title, task.module);
+            }
+            
+            // 更新任务元素的样式
+            const taskElements = document.querySelectorAll(`[data-id="${task.id}"]`);
+            taskElements.forEach(element => {
+                element.classList.toggle('completed', isChecked);
+            });
+            
+            // 更新进度
+            updateProgress();
+            
+            // 更新仪表盘统计
+            updateDashboardStats();
+            
+            // 保存数据
+            saveTasksData();
+        }
+        
+        // 获取优先级文本
+        function getPriorityText(priority) {
+            const priorityMap = {
+                high: '高',
+                medium: '中',
+                low: '低'
+            };
+            return priorityMap[priority] || priority;
+        }
+        
+        // 获取分类文本
+        function getCategoryText(category) {
+            const categoryMap = {
+                feature: '功能优化',
+                bug: 'Bug修复',
+                test: '测试',
+                other: '其他'
+            };
+            return categoryMap[category] || category;
+        }
+        
+        // 更新进度条和文本
+        function updateProgress() {
+            const allTasks = getAllTasks();
+            const totalTasks = allTasks.length;
+            const completedTasks = allTasks.filter(task => task.completed).length;
+            const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            elements.progressBar.style.width = percentage + '%';
+            elements.progressText.textContent = 
+                `已完成：${completedTasks}/${totalTasks} 任务 (${percentage}%)`;
+        }
+        
+        // 更新仪表盘统计
+        function updateDashboardStats() {
+            const allTasks = getAllTasks();
+            const totalTasks = allTasks.length;
+            const completedTasks = allTasks.filter(task => task.completed).length;
+            const pendingTasks = totalTasks - completedTasks;
+            const highPriorityTasks = allTasks.filter(task => task.priority === 'high' && !task.completed).length;
+            
+            elements.totalTasksCount.textContent = totalTasks;
+            elements.completedTasksCount.textContent = completedTasks;
+            elements.pendingTasksCount.textContent = pendingTasks;
+            elements.highPriorityTasksCount.textContent = highPriorityTasks;
+        }
+        
+        // 渲染近期活动
+        function renderRecentActivities() {
+            const container = elements.recentActivities;
+            container.innerHTML = '';
+            
+            if (activityLogs.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-secondary);">暂无活动</div>';
+                return;
+            }
+            
+            const activityList = document.createElement('ul');
+            activityList.className = 'task-list';
+            
+            activityLogs.slice(0, 10).forEach(activity => {
+                const actionText = getActionText(activity.action);
+                const moduleText = getModuleText(activity.taskModule);
+                
+                const activityItem = document.createElement('li');
+                activityItem.className = 'task-item';
+                activityItem.innerHTML = `
+                    <div class="task-content">
+                        <div class="task-header">
+                            <div class="task-title">
+                                ${actionText} - ${activity.taskTitle}
+                            </div>
+                            <div class="task-meta">
+                                <span>${moduleText}</span>
+                                <span>${activity.timestamp}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                activityList.appendChild(activityItem);
+            });
+            
+            container.appendChild(activityList);
+        }
+        
+        // 获取操作文本
+        function getActionText(action) {
+            const actionMap = {
+                '完成': '<i class="bi bi-check-circle" style="color: #2ecc71;"></i> 完成任务',
+                '取消完成': '<i class="bi bi-x-circle" style="color: #e74c3c;"></i> 取消完成',
+                '添加': '<i class="bi bi-plus-circle" style="color: #3498db;"></i> 添加任务',
+                '编辑': '<i class="bi bi-pencil" style="color: #f39c12;"></i> 编辑任务',
+                '删除': '<i class="bi bi-trash" style="color: #e74c3c;"></i> 删除任务'
+            };
+            return actionMap[action] || action;
+        }
+        
+        // 获取模块文本
+        function getModuleText(module) {
+            const moduleMap = {
+                registration: '<span style="color: #3498db;">挂号模块</span>',
+                billing: '<span style="color: #2ecc71;">划价收费</span>',
+                testing: '<span style="color: #9b59b6;">测试项目</span>'
+            };
+            return moduleMap[module] || module;
+        }
+        
+        // 初始化导出报表
+        function initExportReport() {
+            elements.exportReportBtn.addEventListener('click', () => {
+                // 创建报表内容
+                let reportContent = "医院系统任务进度报表\n\n";
+                reportContent += "生成时间: " + formatDateTime(new Date()) + "\n\n";
+                
+                // 添加概览统计
+                const allTasks = getAllTasks();
+                const totalTasks = allTasks.length;
+                const completedTasks = allTasks.filter(task => task.completed).length;
+                const percentage = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+                
+                reportContent += "== 概览 ==\n";
+                reportContent += `总任务数: ${totalTasks}\n`;
+                reportContent += `已完成任务: ${completedTasks}\n`;
+                reportContent += `完成率: ${percentage}%\n\n`;
+                
+                // 挂号模块
+                reportContent += "== 挂号模块任务 ==\n";
+                tasksData.registrationTasks.forEach(task => {
+                    const status = task.completed ? "✓ 已完成" : "✗ 未完成";
+                    const priority = getPriorityText(task.priority);
+                    const category = getCategoryText(task.category);
+                    const time = task.completionTime ? " | 完成时间: " + task.completionTime : "";
+                    reportContent += `${status} | [${priority}] ${task.title} | ${category} | 负责人: ${task.assignee}${time}\n`;
+                });
+                
+                // 划价收费模块
+                reportContent += "\n== 划价收费模块任务 ==\n";
+                tasksData.billingTasks.forEach(task => {
+                    const status = task.completed ? "✓ 已完成" : "✗ 未完成";
+                    const priority = getPriorityText(task.priority);
+                    const category = getCategoryText(task.category);
+                    const time = task.completionTime ? " | 完成时间: " + task.completionTime : "";
+                    reportContent += `${status} | [${priority}] ${task.title} | ${category} | 负责人: ${task.assignee}${time}\n`;
+                });
+                
+                // 待测试项目
+                reportContent += "\n== 待测试项目 ==\n";
+                tasksData.testingTasks.forEach(task => {
+                    const status = task.completed ? "✓ 已完成" : "✗ 未完成";
+                    const priority = getPriorityText(task.priority);
+                    const category = getCategoryText(task.category);
+                    const time = task.completionTime ? " | 完成时间: " + task.completionTime : "";
+                    reportContent += `${status} | [${priority}] ${task.title} | ${category} | 负责人: ${task.assignee}${time}\n`;
+                });
+                
+                // 创建并下载文件
+                const blob = new Blob([reportContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '医院系统任务进度报表_' + new Date().toISOString().slice(0,10) + '.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
+        
+        // 初始化保存按钮
+        function initSaveButton() {
+            elements.saveButton.addEventListener('click', () => {
+                saveTasksData();
+                alert('进度已保存！');
+            });
+        }
+        
+        // 初始化搜索功能
+        function initSearchFunctionality() {
+            elements.taskSearchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase().trim();
+                
+                if (searchTerm === '') {
+                    renderAllTaskLists();
+                    return;
+                }
+                
+                // 搜索所有任务
+                const filteredRegistrationTasks = tasksData.registrationTasks.filter(task => 
+                    task.title.toLowerCase().includes(searchTerm) || 
+                    (task.description && task.description.toLowerCase().includes(searchTerm)) ||
+                    (task.assignee && task.assignee.toLowerCase().includes(searchTerm))
+                );
+                
+                const filteredBillingTasks = tasksData.billingTasks.filter(task => 
+                    task.title.toLowerCase().includes(searchTerm) || 
+                    (task.description && task.description.toLowerCase().includes(searchTerm)) ||
+                    (task.assignee && task.assignee.toLowerCase().includes(searchTerm))
+                );
+                
+                const filteredTestingTasks = tasksData.testingTasks.filter(task => 
+                    task.title.toLowerCase().includes(searchTerm) || 
+                    (task.description && task.description.toLowerCase().includes(searchTerm)) ||
+                    (task.assignee && task.assignee.toLowerCase().includes(searchTerm))
+                );
+                
+                // 渲染搜索结果
+                renderTaskList(filteredRegistrationTasks, elements.registrationTasks);
+                renderTaskList(filteredBillingTasks, elements.billingTasks);
+                renderTaskList(filteredTestingTasks, elements.testingTasks);
+            });
+        }
+        
+        // 初始化图表
+        let charts = {};
+        
+        function initCharts() {
+            // 创建图表对象但不立即渲染
+            charts = {
+                completionTrend: null,
+                moduleCompletion: null,
+                priority: null,
+                completionTime: null
+            };
+            
+            // 只有在统计部分可见时才渲染图表
+            if (appState.currentSection === 'statistics') {
+                renderAllCharts();
+            }
+        }
+        
+        // 渲染所有图表
+        function renderAllCharts() {
+            renderCompletionTrendChart();
+            renderModuleCompletionChart();
+            renderPriorityChart();
+            renderCompletionTimeChart();
+        }
+        
+        // 更新图表主题
+        function updateChartsTheme() {
+            const textColor = appState.isDarkMode ? '#f0f0f0' : '#333333';
+            const gridColor = appState.isDarkMode ? '#444444' : '#dddddd';
+            
+            // 更新所有图表的主题
+            Object.values(charts).forEach(chart => {
+                if (chart) {
+                    chart.options.scales.x.ticks.color = textColor;
+                    chart.options.scales.x.grid.color = gridColor;
+                    chart.options.scales.y.ticks.color = textColor;
+                    chart.options.scales.y.grid.color = gridColor;
+                    chart.options.plugins.legend.labels.color = textColor;
+                    chart.update();
+                }
+            });
+        }
+        
+        // 渲染完成趋势图表
+        function renderCompletionTrendChart() {
+            const ctx = document.getElementById('completion-trend-chart').getContext('2d');
+            
+            // 准备数据 - 模拟最近7天的完成情况
+            const dates = [];
+            const completedCounts = [];
+            
+            // 获取最近7天的日期
+            const today = new Date();
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                dates.push(formatDate(date));
+                
+                // 统计该日期完成的任务数
+                // 这里我们用模拟数据，实际应用中应该检查任务的completionTime
+                const count = Math.floor(Math.random() * 3); // 假设每天完成0-2个任务
+                completedCounts.push(count);
+            }
+            
+            const textColor = appState.isDarkMode ? '#f0f0f0' : '#333333';
+            const gridColor = appState.isDarkMode ? '#444444' : '#dddddd';
+            
+            // 创建图表
+            if (charts.completionTrend) {
+                charts.completionTrend.destroy();
+            }
+            
+            charts.completionTrend = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '每日完成任务数',
+                        data: completedCounts,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        borderWidth: 2,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                color: textColor,
+                                stepSize: 1
+                            },
+                            grid: { color: gridColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 渲染模块完成情况图表
+        function renderModuleCompletionChart() {
+            const ctx = document.getElementById('module-completion-chart').getContext('2d');
+            
+            // 准备数据
+            const modules = ['挂号模块', '划价收费', '测试项目'];
+            const totalCounts = [
+                tasksData.registrationTasks.length,
+                tasksData.billingTasks.length,
+                tasksData.testingTasks.length
+            ];
+            const completedCounts = [
+                tasksData.registrationTasks.filter(task => task.completed).length,
+                tasksData.billingTasks.filter(task => task.completed).length,
+                tasksData.testingTasks.filter(task => task.completed).length
+            ];
+            
+            const textColor = appState.isDarkMode ? '#f0f0f0' : '#333333';
+            const gridColor = appState.isDarkMode ? '#444444' : '#dddddd';
+            
+            // 创建图表
+            if (charts.moduleCompletion) {
+                charts.moduleCompletion.destroy();
+            }
+            
+            charts.moduleCompletion = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: modules,
+                    datasets: [
+                        {
+                            label: '总任务数',
+                            data: totalCounts,
+                            backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                            borderColor: 'rgba(52, 152, 219, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: '已完成',
+                            data: completedCounts,
+                            backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                            borderColor: 'rgba(46, 204, 113, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                color: textColor,
+                                stepSize: 1
+                            },
+                            grid: { color: gridColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 渲染优先级分布图表
+        function renderPriorityChart() {
+            const ctx = document.getElementById('priority-chart').getContext('2d');
+            
+            // 准备数据
+            const allTasks = getAllTasks();
+            const highCount = allTasks.filter(task => task.priority === 'high').length;
+            const mediumCount = allTasks.filter(task => task.priority === 'medium').length;
+            const lowCount = allTasks.filter(task => task.priority === 'low').length;
+            
+            const textColor = appState.isDarkMode ? '#f0f0f0' : '#333333';
+            
+            // 创建图表
+            if (charts.priority) {
+                charts.priority.destroy();
+            }
+            
+            charts.priority = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['高优先级', '中优先级', '低优先级'],
+                    datasets: [{
+                        data: [highCount, mediumCount, lowCount],
+                        backgroundColor: [
+                            'rgba(231, 76, 60, 0.7)',
+                            'rgba(243, 156, 18, 0.7)',
+                            'rgba(52, 152, 219, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(231, 76, 60, 1)',
+                            'rgba(243, 156, 18, 1)',
+                            'rgba(52, 152, 219, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { 
+                                color: textColor,
+                                boxWidth: 12,
+                                padding: 5,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            top: 0,
+                            bottom: 0,
+                            left: 10,
+                            right: 10
+                        }
+                    },
+                    radius: '65%'
+                }
+            });
+        }
+        
+        // 渲染完成时间分布图表
+        function renderCompletionTimeChart() {
+            const ctx = document.getElementById('completion-time-chart').getContext('2d');
+            
+            // 准备数据 - 按小时分组统计任务完成情况
+            const hourLabels = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+            const completionCounts = Array(24).fill(0);
+            
+            // 统计所有已完成任务的完成时间
+            const completedTasks = getAllTasks().filter(task => task.completed && task.completionTime);
+            
+            completedTasks.forEach(task => {
+                const completionTime = new Date(task.completionTime);
+                const hour = completionTime.getHours();
+                completionCounts[hour]++;
+            });
+            
+            const textColor = appState.isDarkMode ? '#f0f0f0' : '#333333';
+            const gridColor = appState.isDarkMode ? '#444444' : '#dddddd';
+            
+            // 创建图表
+            if (charts.completionTime) {
+                charts.completionTime.destroy();
+            }
+            
+            charts.completionTime = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: hourLabels,
+                    datasets: [{
+                        label: '任务完成时间分布',
+                        data: completionCounts,
+                        backgroundColor: 'rgba(155, 89, 182, 0.7)',
+                        borderColor: 'rgba(155, 89, 182, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                color: textColor,
+                                stepSize: 1
+                            },
+                            grid: { color: gridColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 初始化模态框事件
+        function initModalEvents() {
+            // 关闭模态框
+            elements.closeModal.addEventListener('click', closeTaskModal);
+            elements.cancelTaskBtn.addEventListener('click', closeTaskModal);
+            
+            // 点击模态框外部关闭
+            window.addEventListener('click', function(event) {
+                if (event.target === elements.taskModal) {
+                    closeTaskModal();
+                }
+            });
+            
+            // 提交表单
+            elements.taskForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                saveTaskFromModal();
+            });
+        }
+        
+        // 初始化添加任务按钮事件
+        function initAddTaskEvents() {
+            // 添加任务按钮
+            const addButtons = [
+                { btn: elements.addTaskBtn, module: null },
+                { btn: elements.addRegTaskBtn, module: 'registration' },
+                { btn: elements.addBillTaskBtn, module: 'billing' },
+                { btn: elements.addTestTaskBtn, module: 'testing' }
+            ];
+            
+            addButtons.forEach(({ btn, module }) => {
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        openTaskModal(null, module);
+                    });
+                }
+            });
+        }
+        
+        // 打开任务模态框
+        function openTaskModal(task, defaultModule) {
+            // 设置模态框标题
+            elements.modalTitle.textContent = task ? '编辑任务' : '添加任务';
+            
+            // 设置当前编辑的任务
+            appState.currentEditingTask = task;
+            
+            // 填充表单数据
+            if (task) {
+                document.getElementById('task-title').value = task.title || '';
+                document.getElementById('task-description').value = task.description || '';
+                document.getElementById('task-priority').value = task.priority || 'medium';
+                document.getElementById('task-category').value = task.category || 'feature';
+                document.getElementById('task-assignee').value = '';  // 总是设置为空
+                document.getElementById('task-due-date').value = '';  // 总是设置为空
+                document.getElementById('task-module').value = task.module || 'registration';
+            } else {
+                // 清空表单
+                document.getElementById('task-title').value = '';
+                document.getElementById('task-description').value = '';
+                document.getElementById('task-priority').value = 'medium';
+                document.getElementById('task-category').value = 'feature';
+                document.getElementById('task-assignee').value = '';
+                document.getElementById('task-due-date').value = '';
+                document.getElementById('task-module').value = defaultModule || 'registration';
+            }
+            
+            // 显示模态框
+            elements.taskModal.style.display = 'flex';
+        }
+        
+        // 关闭任务模态框
+        function closeTaskModal() {
+            elements.taskModal.style.display = 'none';
+            appState.currentEditingTask = null;
+        }
+        
+        // 从模态框保存任务
+        function saveTaskFromModal() {
+            const title = document.getElementById('task-title').value.trim();
+            if (!title) {
+                alert('请输入任务标题');
+                return;
+            }
+            
+            const description = document.getElementById('task-description').value.trim();
+            const priority = document.getElementById('task-priority').value;
+            const category = document.getElementById('task-category').value;
+            const assignee = document.getElementById('task-assignee').value.trim();
+            const dueDate = document.getElementById('task-due-date').value;
+            const module = document.getElementById('task-module').value;
+            
+            // 如果是编辑任务
+            if (appState.currentEditingTask) {
+                const task = appState.currentEditingTask;
+                const originalModule = task.module;
+                
+                // 更新任务数据
+                task.title = title;
+                task.description = description;
+                task.priority = priority;
+                task.category = category;
+                task.assignee = assignee;
+                task.dueDate = dueDate;
+                
+                // 如果模块改变，需要移动任务
+                if (module !== originalModule) {
+                    // 从原来的模块中移除
+                    let originalArray;
+                    if (originalModule === 'registration') {
+                        originalArray = tasksData.registrationTasks;
+                    } else if (originalModule === 'billing') {
+                        originalArray = tasksData.billingTasks;
+                    } else if (originalModule === 'testing') {
+                        originalArray = tasksData.testingTasks;
+                    }
+                    
+                    const index = originalArray.findIndex(t => t.id === task.id);
+                    if (index !== -1) {
+                        originalArray.splice(index, 1);
+                    }
+                    
+                    // 添加到新模块
+                    task.module = module;
+                    if (module === 'registration') {
+                        tasksData.registrationTasks.push(task);
+                    } else if (module === 'billing') {
+                        tasksData.billingTasks.push(task);
+                    } else if (module === 'testing') {
+                        tasksData.testingTasks.push(task);
+                    }
+                }
+                
+                // 添加活动日志
+                addActivityLog('编辑', task.id, task.title, task.module);
+            } else {
+                // 创建新任务
+                const newTask = {
+                    id: generateTaskId(module),
+                    title,
+                    description,
+                    priority,
+                    category,
+                    assignee,
+                    dueDate,
+                    module,
+                    completed: false,
+                    completionTime: null
+                };
+                
+                // 添加到相应模块
+                if (module === 'registration') {
+                    tasksData.registrationTasks.push(newTask);
+                } else if (module === 'billing') {
+                    tasksData.billingTasks.push(newTask);
+                } else if (module === 'testing') {
+                    tasksData.testingTasks.push(newTask);
+                }
+                
+                // 添加活动日志
+                addActivityLog('添加', newTask.id, newTask.title, newTask.module);
+            }
+            
+            // 保存数据
+            saveTasksData();
+            
+            // 重新渲染任务列表
+            renderAllTaskLists();
+            
+            // 更新仪表盘统计
+            updateDashboardStats();
+            
+            // 关闭模态框
+            closeTaskModal();
+        }
+        
+        // 生成任务ID
+        function generateTaskId(module) {
+            const prefix = {
+                'registration': 'reg-task-',
+                'billing': 'bill-task-',
+                'testing': 'test-task-'
+            }[module] || 'task-';
+            
+            let maxId = 0;
+            
+            // 查找当前模块中最大的ID编号
+            let tasks;
+            if (module === 'registration') {
+                tasks = tasksData.registrationTasks;
+            } else if (module === 'billing') {
+                tasks = tasksData.billingTasks;
+            } else if (module === 'testing') {
+                tasks = tasksData.testingTasks;
+            } else {
+                tasks = getAllTasks();
+            }
+            
+            tasks.forEach(task => {
+                if (task.id.startsWith(prefix)) {
+                    const idNum = parseInt(task.id.replace(prefix, ''), 10);
+                    if (!isNaN(idNum) && idNum > maxId) {
+                        maxId = idNum;
+                    }
+                }
+            });
+            
+            return prefix + (maxId + 1);
+        }
+        
+        // 初始化设置页面
+        function initSettingsPage() {
+            // 设置默认视图
+            elements.defaultViewSetting.value = appState.currentView;
+            elements.defaultViewSetting.addEventListener('change', function() {
+                appState.currentView = this.value;
+                
+                // 更新视图选项
+                elements.viewOptions.forEach(option => {
+                    option.classList.toggle('active', option.dataset.view === appState.currentView);
+                });
+                
+                renderAllTaskLists();
+                saveAppState();
+            });
+            
+            // 设置默认主题
+            elements.defaultThemeSetting.value = appState.isDarkMode ? 'dark' : 'light';
+            elements.defaultThemeSetting.addEventListener('change', function() {
+                appState.isDarkMode = this.value === 'dark';
+                
+                document.body.classList.toggle('dark-mode', appState.isDarkMode);
+                
+                if (appState.isDarkMode) {
+                    elements.themeToggle.innerHTML = '<i class="bi bi-sun"></i>';
+                } else {
+                    elements.themeToggle.innerHTML = '<i class="bi bi-moon"></i>';
+                }
+                
+                updateChartsTheme();
+                saveAppState();
+            });
+            
+            // 导出所有数据
+            elements.exportAllBtn.addEventListener('click', function() {
+                const exportData = {
+                    tasksData,
+                    activityLogs,
+                    exportDate: formatDateTime(new Date())
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = '医院系统任务数据_' + new Date().toISOString().slice(0,10) + '.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+            
+            // 导入数据
+            elements.importDataBtn.addEventListener('click', function() {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            const importedData = JSON.parse(event.target.result);
+                            
+                            // 验证导入的数据
+                            if (importedData.tasksData && importedData.activityLogs) {
+                                if (confirm('确定要导入这些数据吗？这将覆盖当前的所有任务数据。')) {
+                                    tasksData = importedData.tasksData;
+                                    activityLogs = importedData.activityLogs;
+                                    
+                                    // 保存导入的数据
+                                    saveTasksData();
+                                    
+                                    // 刷新页面显示
+                                    renderAllTaskLists();
+                                    updateDashboardStats();
+                                    renderRecentActivities();
+                                    
+                                    alert('数据导入成功！');
+                                }
+                            } else {
+                                alert('导入的文件格式不正确！');
+                            }
+                        } catch (error) {
+                            alert('导入失败：' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                });
+                
+                input.click();
+            });
+        }
+        
+        // 在切换到统计部分时渲染图表
+        elements.navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (item.dataset.section === 'statistics') {
+                    setTimeout(renderAllCharts, 100);
+                }
+            });
+        });
+        
+        // 删除任务
+        function deleteTask(task) {
+            // 获取对应的任务数组
+            let taskArray;
+            let moduleKey;
+            
+            if (task.module === 'registration') {
+                taskArray = tasksData.registrationTasks;
+                moduleKey = 'registrationTasks';
+            } else if (task.module === 'billing') {
+                taskArray = tasksData.billingTasks;
+                moduleKey = 'billingTasks';
+            } else if (task.module === 'testing') {
+                taskArray = tasksData.testingTasks;
+                moduleKey = 'testingTasks';
+            }
+            
+            // 找到相应的任务
+            const taskIndex = taskArray.findIndex(t => t.id === task.id);
+            if (taskIndex === -1) return;
+            
+            // 从数组中移除任务
+            taskArray.splice(taskIndex, 1);
+            
+            // 添加活动日志
+            addActivityLog('删除', task.id, task.title, task.module);
+            
+            // 更新任务列表
+            renderAllTaskLists();
+            
+            // 更新仪表盘统计
+            updateDashboardStats();
+            
+            // 保存数据
+            saveTasksData();
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html> 

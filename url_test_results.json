@@ -1,0 +1,74 @@
+[
+  {
+    "url": "https://consult.ht-healthcare.com/manage/#/inquiryManage/inquiryMisOrderList",
+    "current_url": "https://consult.ht-healthcare.com/manage/#/inquiryManage/inquiryMisOrderList",
+    "is_404": false,
+    "has_table": true,
+    "table_count": 275,
+    "title": "问诊订单管理 - 在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/#/inquiryManage/inquiryOrderList",
+    "current_url": "https://consult.ht-healthcare.com/manage/#/404",
+    "is_404": false,
+    "has_table": false,
+    "table_count": 0,
+    "title": "在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/login#/inquiryManage/inquiryMisOrderList",
+    "current_url": "https://consult.ht-healthcare.com/manage/login#/inquiryManage/inquiryMisOrderList",
+    "is_404": false,
+    "has_table": true,
+    "table_count": 275,
+    "title": "问诊订单管理 - 在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/login#/inquiryManage/inquiryOrderList",
+    "current_url": "https://consult.ht-healthcare.com/manage/login#/404",
+    "is_404": false,
+    "has_table": false,
+    "table_count": 0,
+    "title": "在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/app/workbench",
+    "current_url": "https://consult.ht-healthcare.com/manage/app/workbench",
+    "is_404": true,
+    "has_table": false,
+    "table_count": 0,
+    "title": "404 Not Found"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/inquiryManage/inquiryMisOrderList",
+    "current_url": "https://consult.ht-healthcare.com/manage/inquiryManage/inquiryMisOrderList",
+    "is_404": true,
+    "has_table": false,
+    "table_count": 0,
+    "title": "404 Not Found"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/",
+    "current_url": "https://consult.ht-healthcare.com/manage/#/home",
+    "is_404": false,
+    "has_table": false,
+    "table_count": 0,
+    "title": "首页 - 在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage",
+    "current_url": "https://consult.ht-healthcare.com/manage/#/home",
+    "is_404": false,
+    "has_table": false,
+    "table_count": 0,
+    "title": "首页 - 在线问诊后台管理平台"
+  },
+  {
+    "url": "https://consult.ht-healthcare.com/manage/#/home",
+    "current_url": "https://consult.ht-healthcare.com/manage/#/home",
+    "is_404": false,
+    "has_table": false,
+    "table_count": 0,
+    "title": "首页 - 在线问诊后台管理平台"
+  }
+]
